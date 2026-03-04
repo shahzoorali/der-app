@@ -7,7 +7,7 @@ import vendors from "@/data/vendors.json";
 import { Search, Filter, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const categories = ["All", "Fashion", "Jewelry", "Home Decor", "Footwear", "Kids", "Beauty", "Fragrance", "Lifestyle"];
+const categories = ["All", "Food", "Fashion", "Jewelry", "Home Decor", "Footwear", "Kids", "Beauty", "Fragrance", "Lifestyle"];
 
 export default function Bazaar() {
     const [search, setSearch] = useState("");
