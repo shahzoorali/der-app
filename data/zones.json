@@ -1,0 +1,26 @@
+[
+    {
+        "id": "z1",
+        "name": "Daawat-E-Ramzan",
+        "venue": "Kings Palace",
+        "description": "The heart of food and community.",
+        "color": "#2b5ea7",
+        "path": "M 50 50 L 300 50 L 300 400 L 50 400 Z"
+    },
+    {
+        "id": "z2",
+        "name": "Shaan-E-Ramzan",
+        "venue": "Kings Classic Garden",
+        "description": "Immersive cultural experience and exhibits.",
+        "color": "#d42027",
+        "path": "M 700 50 L 950 50 L 950 300 L 700 300 Z"
+    },
+    {
+        "id": "z3",
+        "name": "Crescent Bazaar",
+        "venue": "Kings Crown Convention",
+        "description": "Premium shopping and lifestyle arena.",
+        "color": "#e8c840",
+        "path": "M 400 250 L 650 250 L 650 550 L 400 550 Z"
+    }
+]

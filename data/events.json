@@ -1,0 +1,34 @@
+[
+    {
+        "id": "e1",
+        "title": "Grand Launch Ceremony",
+        "time": "7:00 PM",
+        "venue": "Kings Palace - Main Stage",
+        "description": "Inauguration by Mr. Barkat Alam Khan and distinguished guests.",
+        "artist": "Special Guests"
+    },
+    {
+        "id": "e2",
+        "title": "Sufi Night with Nizami Brothers",
+        "time": "9:30 PM",
+        "venue": "Kings Palace - Cultural Stage",
+        "description": "A soulful evening of Qawwali and spiritual melodies.",
+        "artist": "Nizami Brothers"
+    },
+    {
+        "id": "e3",
+        "title": "Interactive Calligraphy Workshop",
+        "time": "8:00 PM",
+        "venue": "Kings Classic Garden",
+        "description": "Learn the basics of Arabic calligraphy from master artists.",
+        "artist": "Ustad Ahmed Ali"
+    },
+    {
+        "id": "e4",
+        "title": "Fashion Showcase: Crescent Runaway",
+        "time": "10:30 PM",
+        "venue": "Kings Crown Convention",
+        "description": "Highlighting the latest collections from Crescent Bazaar designers.",
+        "artist": "Featured Designers"
+    }
+]

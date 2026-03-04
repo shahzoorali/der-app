@@ -1,0 +1,1506 @@
+[
+  {
+    "id": "1",
+    "name": "Bollywood Suits",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Designer Wear",
+    "stall": "1"
+  },
+  {
+    "id": "2",
+    "name": "Bollywood Suits",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Designer Wear",
+    "stall": "2"
+  },
+  {
+    "id": "3",
+    "name": "Kashika Label Delhi",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Wear",
+    "stall": "3"
+  },
+  {
+    "id": "4",
+    "name": "Rana Jewels",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Exquisite Jewelry",
+    "stall": "4"
+  },
+  {
+    "id": "5",
+    "name": "Aaira the Designer Wear",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Wear",
+    "stall": "5"
+  },
+  {
+    "id": "6",
+    "name": "Just Bling it",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Fashion Jewelry",
+    "stall": "6"
+  },
+  {
+    "id": "7",
+    "name": "Glowry Hijabs",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Hijabs & Accessories",
+    "stall": "7"
+  },
+  {
+    "id": "8",
+    "name": "Opera Hijabs",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Hijabs",
+    "stall": "8"
+  },
+  {
+    "id": "9",
+    "name": "Kids Fashion Hub",
+    "category": "Kids",
+    "venue": "Kings Crown Convention",
+    "specialty": "Kids Wear",
+    "stall": "9"
+  },
+  {
+    "id": "10",
+    "name": "Tahniyat Fashion",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Trendy Fashion",
+    "stall": "10"
+  },
+  {
+    "id": "11",
+    "name": "Isra Collections",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Collections",
+    "stall": "11"
+  },
+  {
+    "id": "12",
+    "name": "Marhaba Bedsheet",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Bedsheets",
+    "stall": "12"
+  },
+  {
+    "id": "13",
+    "name": "Marhaba Bedsheet",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Bedsheets",
+    "stall": "13"
+  },
+  {
+    "id": "14",
+    "name": "Harsh International",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Global Lifestyle Products",
+    "stall": "14"
+  },
+  {
+    "id": "15",
+    "name": "Sonia Dubai",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dubai Collections",
+    "stall": "15"
+  },
+  {
+    "id": "16",
+    "name": "Simra Hashmi Kaftans",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Kaftans",
+    "stall": "16"
+  },
+  {
+    "id": "17",
+    "name": "Sweet Dreams NK",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Nightwear",
+    "stall": "17"
+  },
+  {
+    "id": "18",
+    "name": "Mumbaiwala",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Mumbai Trends",
+    "stall": "18"
+  },
+  {
+    "id": "19",
+    "name": "Mumbaiwala",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Mumbai Trends",
+    "stall": "19"
+  },
+  {
+    "id": "20",
+    "name": "Hassan Kashmir Emporio",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Kashmiri Handloom",
+    "stall": "20"
+  },
+  {
+    "id": "21",
+    "name": "Chadha Jewellery",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Jewelry",
+    "stall": "21"
+  },
+  {
+    "id": "22",
+    "name": "Chadha Jewellery",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Jewelry",
+    "stall": "22"
+  },
+  {
+    "id": "23",
+    "name": "Akansha Boutique",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Fashion",
+    "stall": "23"
+  },
+  {
+    "id": "24",
+    "name": "Asma Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Collection",
+    "stall": "24"
+  },
+  {
+    "id": "25",
+    "name": "Asma Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Collection",
+    "stall": "25"
+  },
+  {
+    "id": "26",
+    "name": "House of Kashmir",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Kashmiri Specialty",
+    "stall": "26"
+  },
+  {
+    "id": "27",
+    "name": "Aayat Fashions",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Fashion",
+    "stall": "27"
+  },
+  {
+    "id": "28",
+    "name": "Diyaaz",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Modern Ethnic",
+    "stall": "28"
+  },
+  {
+    "id": "29",
+    "name": "Libaaz Hyd Boutique By Ansari’s",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Hyderabadi Boutique",
+    "stall": "29"
+  },
+  {
+    "id": "30",
+    "name": "Shabreen Designer",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Wear",
+    "stall": "30"
+  },
+  {
+    "id": "31",
+    "name": "Raja Textiles",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Textiles & Fabrics",
+    "stall": "31"
+  },
+  {
+    "id": "32",
+    "name": "Jaiswal Chikankari",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lucknowi Chikankari",
+    "stall": "32"
+  },
+  {
+    "id": "33",
+    "name": "Jaiswal Chikankari",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lucknowi Chikankari",
+    "stall": "33"
+  },
+  {
+    "id": "34",
+    "name": "Healthy Care",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Health & Wellness",
+    "stall": "34"
+  },
+  {
+    "id": "35",
+    "name": "Spicy Martini",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Fashion",
+    "stall": "35"
+  },
+  {
+    "id": "36",
+    "name": "Rida Atelier",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Boutique",
+    "stall": "36"
+  },
+  {
+    "id": "37",
+    "name": "Sumis Fashion",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Chic Outfits",
+    "stall": "37"
+  },
+  {
+    "id": "38",
+    "name": "Ayyub Ali",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Wear",
+    "stall": "38"
+  },
+  {
+    "id": "39",
+    "name": "Gurmehar Fashions",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Styles",
+    "stall": "39"
+  },
+  {
+    "id": "40",
+    "name": "Deaura Jewels",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Jewelry Design",
+    "stall": "40"
+  },
+  {
+    "id": "41",
+    "name": "Khans Pearls",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Hyderabadi Pearls",
+    "stall": "41"
+  },
+  {
+    "id": "42",
+    "name": "Begums",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Women's Ethnic",
+    "stall": "42"
+  },
+  {
+    "id": "43",
+    "name": "Begums",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Women's Ethnic",
+    "stall": "43"
+  },
+  {
+    "id": "44",
+    "name": "Begums",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Women's Ethnic",
+    "stall": "44"
+  },
+  {
+    "id": "45",
+    "name": "Begums",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Women's Ethnic",
+    "stall": "45"
+  },
+  {
+    "id": "46",
+    "name": "Kala Silk",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Silks",
+    "stall": "46"
+  },
+  {
+    "id": "47",
+    "name": "Afiya Fashion",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Stylish Wear",
+    "stall": "47"
+  },
+  {
+    "id": "48",
+    "name": "Shah Perfumes",
+    "category": "Fragrance",
+    "venue": "Kings Crown Convention",
+    "specialty": "Exotic Fragrances",
+    "stall": "48"
+  },
+  {
+    "id": "49",
+    "name": "Femtoes footwear",
+    "category": "Footwear",
+    "venue": "Kings Crown Convention",
+    "specialty": "Fashionable Footwear",
+    "stall": "49"
+  },
+  {
+    "id": "50",
+    "name": "Kashmir Art",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Kashmiri Artifacts",
+    "stall": "50"
+  },
+  {
+    "id": "51",
+    "name": "Fashion Bazaar",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Variety Fashion",
+    "stall": "51"
+  },
+  {
+    "id": "52",
+    "name": "Samrat Construction",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Living & Construction",
+    "stall": "52"
+  },
+  {
+    "id": "53",
+    "name": "Bollywood Suits",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Wear",
+    "stall": "53"
+  },
+  {
+    "id": "54",
+    "name": "T&W",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Brand",
+    "stall": "54"
+  },
+  {
+    "id": "55",
+    "name": "Syed Nabeel",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Wear",
+    "stall": "55"
+  },
+  {
+    "id": "56",
+    "name": "Ayesha Cosmetics",
+    "category": "Beauty",
+    "venue": "Kings Crown Convention",
+    "specialty": "Cosmetics & Beauty",
+    "stall": "56"
+  },
+  {
+    "id": "57",
+    "name": "Beads Fashion",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Bead Jewelry",
+    "stall": "57"
+  },
+  {
+    "id": "58",
+    "name": "Afghan Roots",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Afghan Specialties",
+    "stall": "58"
+  },
+  {
+    "id": "59",
+    "name": "Banaras Sarees",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Banarasi Silks",
+    "stall": "59"
+  },
+  {
+    "id": "60",
+    "name": "Sonia Dubai",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dubai Imports",
+    "stall": "60"
+  },
+  {
+    "id": "61",
+    "name": "Elite Vogue",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Vogue Trends",
+    "stall": "61"
+  },
+  {
+    "id": "62",
+    "name": "Sonia Dubai",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dubai Imports",
+    "stall": "62"
+  },
+  {
+    "id": "63",
+    "name": "Inayra Dubai",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Luxury Dubai Wear",
+    "stall": "63"
+  },
+  {
+    "id": "64",
+    "name": "Saachi Creations",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Unique Creations",
+    "stall": "64"
+  },
+  {
+    "id": "65",
+    "name": "Balaji Ethnic",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Outfits",
+    "stall": "65"
+  },
+  {
+    "id": "66",
+    "name": "Sonia Dubai",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dubai Imports",
+    "stall": "66"
+  },
+  {
+    "id": "67",
+    "name": "Mysore Saree udyog",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Mysore Sarees",
+    "stall": "67"
+  },
+  {
+    "id": "68",
+    "name": "Ihlaam",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Modest Wear",
+    "stall": "68"
+  },
+  {
+    "id": "69",
+    "name": "Ihlaam",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Modest Wear",
+    "stall": "69"
+  },
+  {
+    "id": "70",
+    "name": "Haya ABAYA Mumbai collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Mumbai Abayas",
+    "stall": "70"
+  },
+  {
+    "id": "71",
+    "name": "Shehnaaz Mehendi",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Mehendi Art",
+    "stall": "71"
+  },
+  {
+    "id": "72",
+    "name": "Jaipur Bangles",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Bangles",
+    "stall": "72"
+  },
+  {
+    "id": "73",
+    "name": "Falak Burqa House",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Burqas & Hijabs",
+    "stall": "73"
+  },
+  {
+    "id": "74",
+    "name": "Rehmans Creations",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Wear",
+    "stall": "74"
+  },
+  {
+    "id": "75",
+    "name": "Sharjeena Fashions",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Festive Styles",
+    "stall": "75"
+  },
+  {
+    "id": "76",
+    "name": "Al Rashid Gourmet",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Gourmet Foods",
+    "stall": "76"
+  },
+  {
+    "id": "77",
+    "name": "Kamakshi Jewels",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Jewels",
+    "stall": "77"
+  },
+  {
+    "id": "78",
+    "name": "White Dreams",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Fashion",
+    "stall": "78"
+  },
+  {
+    "id": "79",
+    "name": "Brides Elegance",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Bridal Wear",
+    "stall": "79"
+  },
+  {
+    "id": "80",
+    "name": "Taslim",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Wear",
+    "stall": "80"
+  },
+  {
+    "id": "81",
+    "name": "T&W",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Brand",
+    "stall": "81"
+  },
+  {
+    "id": "82",
+    "name": "T&W",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Brand",
+    "stall": "82"
+  },
+  {
+    "id": "83",
+    "name": "Urban Carrier",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Bags & Accessories",
+    "stall": "83"
+  },
+  {
+    "id": "84",
+    "name": "Urban Carrier",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Bags & Accessories",
+    "stall": "84"
+  },
+  {
+    "id": "85",
+    "name": "Nizam Jewels",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Nizam Inspired Jewelry",
+    "stall": "85"
+  },
+  {
+    "id": "86",
+    "name": "Styleport",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Modern Ethnic",
+    "stall": "86"
+  },
+  {
+    "id": "87",
+    "name": "Maya Chikan Art",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Chikan Embroidery",
+    "stall": "87"
+  },
+  {
+    "id": "88",
+    "name": "Punjab Jutti Collection",
+    "category": "Footwear",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Juttis",
+    "stall": "88"
+  },
+  {
+    "id": "89",
+    "name": "Punjab Jutti Collection",
+    "category": "Footwear",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Juttis",
+    "stall": "89"
+  },
+  {
+    "id": "90",
+    "name": "Zainab Jewellers Old Lady",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Vintage Jewelry",
+    "stall": "90"
+  },
+  {
+    "id": "91",
+    "name": "Dharamveer",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Products",
+    "stall": "91"
+  },
+  {
+    "id": "92",
+    "name": "Taslim",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Wear",
+    "stall": "92"
+  },
+  {
+    "id": "93",
+    "name": "SR Fashion",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Trendy Wear",
+    "stall": "93"
+  },
+  {
+    "id": "94",
+    "name": "Heba Door & Curtains",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Home Furnishing",
+    "stall": "94"
+  },
+  {
+    "id": "95",
+    "name": "SK Rajasthani Bangles",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Rajasthani Bangles",
+    "stall": "95"
+  },
+  {
+    "id": "96",
+    "name": "Prism",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Multi-category Lifestyle",
+    "stall": "96"
+  },
+  {
+    "id": "97",
+    "name": "Zamms Closet",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Closet",
+    "stall": "97"
+  },
+  {
+    "id": "98",
+    "name": "Kanjeevaram",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Traditional Sils",
+    "stall": "98"
+  },
+  {
+    "id": "99",
+    "name": "K Designer",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Specialist Designer",
+    "stall": "99"
+  },
+  {
+    "id": "100",
+    "name": "Nuzhat Handicraft",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Artisanal Handicrafts",
+    "stall": "100"
+  },
+  {
+    "id": "101",
+    "name": "RJ Enterprises",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Solutions",
+    "stall": "101"
+  },
+  {
+    "id": "102",
+    "name": "RJ Enterprises",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Solutions",
+    "stall": "102"
+  },
+  {
+    "id": "103A",
+    "name": "Nayaab mumbai",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Mumbai Specialty",
+    "stall": "103A"
+  },
+  {
+    "id": "103B",
+    "name": "Razee label",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Label",
+    "stall": "103B"
+  },
+  {
+    "id": "104",
+    "name": "Threeya",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Contemporary Ethnic",
+    "stall": "104"
+  },
+  {
+    "id": "105",
+    "name": "MF Handicrafts",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Handcrafted Items",
+    "stall": "105"
+  },
+  {
+    "id": "106",
+    "name": "Syeda Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Collection",
+    "stall": "106"
+  },
+  {
+    "id": "107",
+    "name": "Artis India",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Indian Art",
+    "stall": "107"
+  },
+  {
+    "id": "108",
+    "name": "NEW EVERGREEN",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Evergreen Products",
+    "stall": "108"
+  },
+  {
+    "id": "109",
+    "name": "Vanita western dress",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Western Wear",
+    "stall": "109"
+  },
+  {
+    "id": "110",
+    "name": "A to Z Fashion",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Fashion Variety",
+    "stall": "110"
+  },
+  {
+    "id": "111",
+    "name": "Marhaba Bedsheet",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Bedsheets",
+    "stall": "111"
+  },
+  {
+    "id": "112",
+    "name": "Era Chikan",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lucknowi Chikan",
+    "stall": "112"
+  },
+  {
+    "id": "113",
+    "name": "My Choice Hub",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Curated Fashion",
+    "stall": "113"
+  },
+  {
+    "id": "114",
+    "name": "Maryam Readymade Garment",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Readymade Styles",
+    "stall": "114"
+  },
+  {
+    "id": "115",
+    "name": "Ayesha Nayeem Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Specialist Collection",
+    "stall": "115"
+  },
+  {
+    "id": "116",
+    "name": "Ayesha Nayeem Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Specialist Collection",
+    "stall": "116"
+  },
+  {
+    "id": "117",
+    "name": "Chic Feet Footwear",
+    "category": "Footwear",
+    "venue": "Kings Crown Convention",
+    "specialty": "Stylish Footwear",
+    "stall": "117"
+  },
+  {
+    "id": "118",
+    "name": "Maria Collection (toys)",
+    "category": "Kids",
+    "venue": "Kings Crown Convention",
+    "specialty": "Toys & Games",
+    "stall": "118"
+  },
+  {
+    "id": "119",
+    "name": "Fitoor E Fabric",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Fabrics",
+    "stall": "119"
+  },
+  {
+    "id": "120",
+    "name": "Akansha Boutique",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Designs",
+    "stall": "120"
+  },
+  {
+    "id": "121",
+    "name": "Hanna & Zainy",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Wear",
+    "stall": "121"
+  },
+  {
+    "id": "122",
+    "name": "Dhakai jamdani weaving factory",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dhakai Jamdani Sarees",
+    "stall": "122"
+  },
+  {
+    "id": "123",
+    "name": "Rehan Textiles & Handbags",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Textiles & Bags",
+    "stall": "123"
+  },
+  {
+    "id": "124",
+    "name": "Rehan Textiles & Handbags",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Textiles & Bags",
+    "stall": "124"
+  },
+  {
+    "id": "125",
+    "name": "Jalal Jewellery",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Bridal Jewelry",
+    "stall": "125"
+  },
+  {
+    "id": "126",
+    "name": "Hoorain Abaya",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Exclusive Abayas",
+    "stall": "126"
+  },
+  {
+    "id": "127",
+    "name": "Hoorain Abaya",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Exclusive Abayas",
+    "stall": "127"
+  },
+  {
+    "id": "128",
+    "name": "Krystal_elegance",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Jewelry",
+    "stall": "128"
+  },
+  {
+    "id": "129",
+    "name": "Mariyam Readymade Garment",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Readymade Garments",
+    "stall": "129"
+  },
+  {
+    "id": "131",
+    "name": "AN Watches",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Luxury Watches",
+    "stall": "131"
+  },
+  {
+    "id": "132",
+    "name": "Taslim",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Wear",
+    "stall": "132"
+  },
+  {
+    "id": "134",
+    "name": "Zubair pearls and jewellery",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Pearls & Jewelry",
+    "stall": "134"
+  },
+  {
+    "id": "137",
+    "name": "Roma's Boutique",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Boutique Collection",
+    "stall": "137"
+  },
+  {
+    "id": "138",
+    "name": "Aahana Emporio",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Handloom Boutique",
+    "stall": "138"
+  },
+  {
+    "id": "139",
+    "name": "Galaxy Enterprises",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Goods",
+    "stall": "139"
+  },
+  {
+    "id": "140",
+    "name": "Galaxy Enterprises",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Lifestyle Goods",
+    "stall": "140"
+  },
+  {
+    "id": "141",
+    "name": "Luxe Bags (Colorpop)",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Handbags & Accessories",
+    "stall": "141"
+  },
+  {
+    "id": "142",
+    "name": "Tanu Creations",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Wear",
+    "stall": "142"
+  },
+  {
+    "id": "143",
+    "name": "Inspire Living",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Home Furniture",
+    "stall": "143"
+  },
+  {
+    "id": "144",
+    "name": "Anabia Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Stitched Suits",
+    "stall": "144"
+  },
+  {
+    "id": "145",
+    "name": "Tech Studio",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Electronics & Accessories",
+    "stall": "145"
+  },
+  {
+    "id": "146",
+    "name": "Fashion Street",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Streetwear Ethnic",
+    "stall": "146"
+  },
+  {
+    "id": "147",
+    "name": "Fashion Street",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Streetwear Ethnic",
+    "stall": "147"
+  },
+  {
+    "id": "148",
+    "name": "Fashion Street",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Streetwear Ethnic",
+    "stall": "148"
+  },
+  {
+    "id": "149",
+    "name": "AMAIR HOSIERY NIGHTDRESS",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Comfort Nightwear",
+    "stall": "149"
+  },
+  {
+    "id": "150",
+    "name": "Lucknow Chikan Palace",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Handcrafted Chikan",
+    "stall": "150"
+  },
+  {
+    "id": "151",
+    "name": "Harsh International",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Imported Goods",
+    "stall": "151"
+  },
+  {
+    "id": "152",
+    "name": "World Bazaar",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "International Variety",
+    "stall": "152"
+  },
+  {
+    "id": "153",
+    "name": "RS Rajasthani",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Rajasthani Specialty",
+    "stall": "153"
+  },
+  {
+    "id": "154",
+    "name": "Mehr e Kashmiri",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Kashmiri Poshak",
+    "stall": "154"
+  },
+  {
+    "id": "155",
+    "name": "Ajmer Churan",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Specialty Digestives",
+    "stall": "155"
+  },
+  {
+    "id": "156",
+    "name": "Fashionista Faves",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Trending Outfits",
+    "stall": "156"
+  },
+  {
+    "id": "157",
+    "name": "Sweet Dreams",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Nightwear",
+    "stall": "157"
+  },
+  {
+    "id": "158",
+    "name": "Queen Style",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Regal Fashion",
+    "stall": "158"
+  },
+  {
+    "id": "159",
+    "name": "Mehwish Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Designs",
+    "stall": "159"
+  },
+  {
+    "id": "160",
+    "name": "Shalini Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Stylish Wear",
+    "stall": "160"
+  },
+  {
+    "id": "161",
+    "name": "Sparkle Jewellery",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Shimmering Jewelry",
+    "stall": "161"
+  },
+  {
+    "id": "162",
+    "name": "Marhaba Bedsheet",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Bedcovers",
+    "stall": "162"
+  },
+  {
+    "id": "163",
+    "name": "Marhaba Bedsheet",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Bedcovers",
+    "stall": "163"
+  },
+  {
+    "id": "164",
+    "name": "Marhaba Bedsheet",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Bedcovers",
+    "stall": "164"
+  },
+  {
+    "id": "165",
+    "name": "Maira Furnishing",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Home Furniture",
+    "stall": "165"
+  },
+  {
+    "id": "166",
+    "name": "Maira Furnishing",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Home Furniture",
+    "stall": "166"
+  },
+  {
+    "id": "167",
+    "name": "Sana Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Collection",
+    "stall": "167"
+  },
+  {
+    "id": "168",
+    "name": "Sana Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Collection",
+    "stall": "168"
+  },
+  {
+    "id": "169",
+    "name": "Sana Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Elegant Collection",
+    "stall": "169"
+  },
+  {
+    "id": "170",
+    "name": "Alina Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Fashion",
+    "stall": "170"
+  },
+  {
+    "id": "171",
+    "name": "Alina Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Fashion",
+    "stall": "171"
+  },
+  {
+    "id": "172",
+    "name": "Alina Collection",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Ethnic Fashion",
+    "stall": "172"
+  },
+  {
+    "id": "173",
+    "name": "Thailand Footwear",
+    "category": "Footwear",
+    "venue": "Kings Crown Convention",
+    "specialty": "Imported Footwear",
+    "stall": "173"
+  },
+  {
+    "id": "174",
+    "name": "Thailand Footwear",
+    "category": "Footwear",
+    "venue": "Kings Crown Convention",
+    "specialty": "Imported Footwear",
+    "stall": "174"
+  },
+  {
+    "id": "L1",
+    "name": "Chiccas",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Chic Ensembles",
+    "stall": "L1"
+  },
+  {
+    "id": "L2",
+    "name": "Noor Jewellers",
+    "category": "Jewelry",
+    "venue": "Kings Crown Convention",
+    "specialty": "Sparkling Jewels",
+    "stall": "L2"
+  },
+  {
+    "id": "L3",
+    "name": "Snap the Moment",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Photography & Lifestyle",
+    "stall": "L3"
+  },
+  {
+    "id": "L4",
+    "name": "Dubai burqa collections",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dubai Abayas",
+    "stall": "L4"
+  },
+  {
+    "id": "L5",
+    "name": "Dubai burqa collections",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Dubai Abayas",
+    "stall": "L5"
+  },
+  {
+    "id": "L6",
+    "name": "Royal Hijab",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Hijabs",
+    "stall": "L6"
+  },
+  {
+    "id": "L7",
+    "name": "Toys Wallay",
+    "category": "Kids",
+    "venue": "Kings Crown Convention",
+    "specialty": "Kids Toys",
+    "stall": "L7"
+  },
+  {
+    "id": "L8",
+    "name": "The Sale Store",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Discounted Retail",
+    "stall": "L8"
+  },
+  {
+    "id": "L9",
+    "name": "Bling Fabrics",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Fabrics",
+    "stall": "L9"
+  },
+  {
+    "id": "L10",
+    "name": "Bling Fabrics",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Fabrics",
+    "stall": "L10"
+  },
+  {
+    "id": "L11",
+    "name": "AL haram Attar and Perfumes",
+    "category": "Fragrance",
+    "venue": "Kings Crown Convention",
+    "specialty": "Arabic Attar",
+    "stall": "L11"
+  },
+  {
+    "id": "L12",
+    "name": "Indian Handicrafts",
+    "category": "Home Decor",
+    "venue": "Kings Crown Convention",
+    "specialty": "Indian Art",
+    "stall": "L12"
+  },
+  {
+    "id": "L13",
+    "name": "Royal Hijab",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Premium Hijabs",
+    "stall": "L13"
+  },
+  {
+    "id": "L14",
+    "name": "Bling Fabrics",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Designer Fabrics",
+    "stall": "L14"
+  },
+  {
+    "id": "L15",
+    "name": "MS Mobile Accessories",
+    "category": "Lifestyle",
+    "venue": "Kings Crown Convention",
+    "specialty": "Mobile Accessories",
+    "stall": "L15"
+  },
+  {
+    "id": "L17",
+    "name": "NJ KARACHI SUIT",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Karachi Designer Suits",
+    "stall": "L17"
+  },
+  {
+    "id": "L18",
+    "name": "Falak Burqa House",
+    "category": "Fashion",
+    "venue": "Kings Crown Convention",
+    "specialty": "Modest Wear",
+    "stall": "L18"
+  }
+]

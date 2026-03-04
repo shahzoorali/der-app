@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "type": "event",
+        "title": "Nizami Brothers starting in 15 mins!",
+        "time": "9:15 PM",
+        "venue": "Kings Palace - Cultural Stage",
+        "description": "The main performance of the night is about to begin. Head to the Cultural Stage for the best view.",
+        "priority": "high",
+        "createdAt": "2026-03-04T10:00:00.000Z"
+    },
+    {
+        "id": "2",
+        "type": "crowd",
+        "title": "Crescent Bazaar is very busy",
+        "time": "8:45 PM",
+        "venue": "Kings Crown Convention",
+        "description": "The Bazaar area is currently at high capacity. We recommend visiting the Shaan-E-Ramzan exhibits for a more relaxed experience.",
+        "priority": "medium",
+        "createdAt": "2026-03-04T09:30:00.000Z"
+    },
+    {
+        "id": "3",
+        "type": "promo",
+        "title": "Visit the Mr. Barkat Alam Khan Lounge",
+        "time": "8:00 PM",
+        "venue": "Kings Classic Garden",
+        "description": "Complimentary refreshments for VIP pass holders at the main lounge area.",
+        "priority": "low",
+        "createdAt": "2026-03-04T09:00:00.000Z"
+    },
+    {
+        "id": "4",
+        "type": "general",
+        "title": "Iftar is served!",
+        "time": "6:40 PM",
+        "venue": "All Food Courts",
+        "description": "The fast has opened. Wishing everyone a blessed Iftar. Please follow the queues at food stalls.",
+        "priority": "medium",
+        "createdAt": "2026-03-04T08:00:00.000Z"
+    }
+]

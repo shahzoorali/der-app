@@ -1,0 +1,205 @@
+[
+    {
+        "day": 1,
+        "dateStr": "19th Feb",
+        "fullDate": "2026-02-19",
+        "suhoor": "05:19:00",
+        "iftar": "18:25:00"
+    },
+    {
+        "day": 2,
+        "dateStr": "20th Feb",
+        "fullDate": "2026-02-20",
+        "suhoor": "05:18:00",
+        "iftar": "18:25:00"
+    },
+    {
+        "day": 3,
+        "dateStr": "21st Feb",
+        "fullDate": "2026-02-21",
+        "suhoor": "05:18:00",
+        "iftar": "18:26:00"
+    },
+    {
+        "day": 4,
+        "dateStr": "22nd Feb",
+        "fullDate": "2026-02-22",
+        "suhoor": "05:18:00",
+        "iftar": "18:26:00"
+    },
+    {
+        "day": 5,
+        "dateStr": "23rd Feb",
+        "fullDate": "2026-02-23",
+        "suhoor": "05:17:00",
+        "iftar": "18:27:00"
+    },
+    {
+        "day": 6,
+        "dateStr": "24th Feb",
+        "fullDate": "2026-02-24",
+        "suhoor": "05:17:00",
+        "iftar": "18:27:00"
+    },
+    {
+        "day": 7,
+        "dateStr": "25th Feb",
+        "fullDate": "2026-02-25",
+        "suhoor": "05:15:00",
+        "iftar": "18:27:00"
+    },
+    {
+        "day": 8,
+        "dateStr": "26th Feb",
+        "fullDate": "2026-02-26",
+        "suhoor": "05:15:00",
+        "iftar": "18:27:00"
+    },
+    {
+        "day": 9,
+        "dateStr": "27th Feb",
+        "fullDate": "2026-02-27",
+        "suhoor": "05:14:00",
+        "iftar": "18:27:00"
+    },
+    {
+        "day": 10,
+        "dateStr": "28th Feb",
+        "fullDate": "2026-02-28",
+        "suhoor": "05:14:00",
+        "iftar": "18:28:00"
+    },
+    {
+        "day": 11,
+        "dateStr": "1st Mar",
+        "fullDate": "2026-03-01",
+        "suhoor": "05:13:00",
+        "iftar": "18:28:00"
+    },
+    {
+        "day": 12,
+        "dateStr": "2nd Mar",
+        "fullDate": "2026-03-02",
+        "suhoor": "05:11:00",
+        "iftar": "18:28:00"
+    },
+    {
+        "day": 13,
+        "dateStr": "3rd Mar",
+        "fullDate": "2026-03-03",
+        "suhoor": "05:11:00",
+        "iftar": "18:28:00"
+    },
+    {
+        "day": 14,
+        "dateStr": "4th Mar",
+        "fullDate": "2026-03-04",
+        "suhoor": "05:10:00",
+        "iftar": "18:29:00"
+    },
+    {
+        "day": 15,
+        "dateStr": "5th Mar",
+        "fullDate": "2026-03-05",
+        "suhoor": "05:10:00",
+        "iftar": "18:30:00"
+    },
+    {
+        "day": 16,
+        "dateStr": "6th Mar",
+        "fullDate": "2026-03-06",
+        "suhoor": "05:09:00",
+        "iftar": "18:29:00"
+    },
+    {
+        "day": 17,
+        "dateStr": "7th Mar",
+        "fullDate": "2026-03-07",
+        "suhoor": "05:08:00",
+        "iftar": "18:30:00"
+    },
+    {
+        "day": 18,
+        "dateStr": "8th Mar",
+        "fullDate": "2026-03-08",
+        "suhoor": "05:08:00",
+        "iftar": "18:30:00"
+    },
+    {
+        "day": 19,
+        "dateStr": "9th Mar",
+        "fullDate": "2026-03-09",
+        "suhoor": "05:07:00",
+        "iftar": "18:30:00"
+    },
+    {
+        "day": 20,
+        "dateStr": "10th Mar",
+        "fullDate": "2026-03-10",
+        "suhoor": "05:06:00",
+        "iftar": "18:30:00"
+    },
+    {
+        "day": 21,
+        "dateStr": "11th Mar",
+        "fullDate": "2026-03-11",
+        "suhoor": "05:05:00",
+        "iftar": "18:30:00"
+    },
+    {
+        "day": 22,
+        "dateStr": "12th Mar",
+        "fullDate": "2026-03-12",
+        "suhoor": "05:05:00",
+        "iftar": "18:31:00"
+    },
+    {
+        "day": 23,
+        "dateStr": "13th Mar",
+        "fullDate": "2026-03-13",
+        "suhoor": "05:04:00",
+        "iftar": "18:31:00"
+    },
+    {
+        "day": 24,
+        "dateStr": "14th Mar",
+        "fullDate": "2026-03-14",
+        "suhoor": "05:03:00",
+        "iftar": "18:31:00"
+    },
+    {
+        "day": 25,
+        "dateStr": "15th Mar",
+        "fullDate": "2026-03-15",
+        "suhoor": "05:02:00",
+        "iftar": "18:31:00"
+    },
+    {
+        "day": 26,
+        "dateStr": "16th Mar",
+        "fullDate": "2026-03-16",
+        "suhoor": "05:02:00",
+        "iftar": "18:32:00"
+    },
+    {
+        "day": 27,
+        "dateStr": "17th Mar",
+        "fullDate": "2026-03-17",
+        "suhoor": "05:01:00",
+        "iftar": "18:32:00"
+    },
+    {
+        "day": 28,
+        "dateStr": "18th Mar",
+        "fullDate": "2026-03-18",
+        "suhoor": "05:00:00",
+        "iftar": "18:32:00"
+    },
+    {
+        "day": 29,
+        "dateStr": "19th Mar",
+        "fullDate": "2026-03-19",
+        "suhoor": "05:00:00",
+        "iftar": "18:32:00"
+    }
+]
