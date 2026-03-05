@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Outfit, Playball } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import "./globals.css";
@@ -62,6 +63,15 @@ export default function RootLayout({
         <meta name="application-name" content="Daawat-e-Ramzaan" />
         <meta name="msapplication-TileColor" content="#2b5ea7" />
         <meta name="msapplication-TileImage" content="/der-pwa-maskable.png" />
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "vr0e55blga");
+          `}
+        </Script>
       </head>
       <body className={`${outfit.variable} ${playball.variable} antialiased selection:bg-brand-gold selection:text-brand-blue`}>
         <AppShell>{children}</AppShell>
