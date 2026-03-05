@@ -54,6 +54,7 @@ export class InfraStack extends cdk.Stack {
         minify: true,
         sourceMap: false,
         forceDockerBundling: false,
+        externalModules: ['@aws-sdk/*'],
       },
     });
 
@@ -77,6 +78,7 @@ export class InfraStack extends cdk.Stack {
         minify: true,
         sourceMap: false,
         forceDockerBundling: false,
+        externalModules: ['@aws-sdk/*'],
       },
     });
 
