@@ -294,7 +294,7 @@ export default function Home() {
         </section >
 
         {/* Map Shortcut - enhanced with Charminar */}
-        < Link href="/map" className="block relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-gold to-amber-400 p-6 text-brand-blue group mb-6" >
+        {/* < Link href="/map" className="block relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-gold to-amber-400 p-6 text-brand-blue group mb-6" >
           <div className="absolute top-2 right-2 opacity-10">
             <CharminarIcon className="w-24 h-24" />
           </div>
@@ -308,7 +308,7 @@ export default function Home() {
             </div>
           </div>
           <div className="absolute inset-0 bg-white/10 group-active:bg-transparent transition-colors" />
-        </Link >
+        </Link > */}
 
         {/* Sponsors Section */}
         <section className="mb-10 relative overflow-hidden rounded-3xl bg-white border border-brand-blue/5 p-8">
