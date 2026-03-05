@@ -11,6 +11,8 @@ import Link from "next/link";
 const featuredEvents = events.slice(0, 3);
 
 const uniqueVendorNames = new Set(vendors.map(v => v.name));
+const foodStallsCount = vendors.filter(v => v.category === "Food").length;
+const retailStallsCount = vendors.length - foodStallsCount;
 
 const categories = [
   { name: "Fashion", icon: ShoppingBag, count: new Set(vendors.filter(v => v.category === "Fashion").map(v => v.name)).size, color: "#2b5ea7" },
@@ -90,12 +92,12 @@ export default function Home() {
             <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Days</span>
           </div>
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-brand-blue/5 text-center">
-            <span className="text-brand-blue font-bold text-2xl block">3</span>
-            <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Venues</span>
+            <span className="text-brand-blue font-bold text-2xl block">{retailStallsCount}</span>
+            <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Retail Stalls</span>
           </div>
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-brand-blue/5 text-center">
-            <span className="text-brand-blue font-bold text-2xl block">{vendors.length}+</span>
-            <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Stalls</span>
+            <span className="text-brand-blue font-bold text-2xl block">{foodStallsCount}</span>
+            <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Food Stalls</span>
           </div>
         </div>
 
