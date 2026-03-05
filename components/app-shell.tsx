@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { SplashScreen } from "@/components/brand-elements";
 import { NotificationPrompt } from "@/components/notification-prompt";
 
@@ -9,6 +9,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
     const handleSplashComplete = useCallback(() => {
         setShowSplash(false);
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/sw.js").catch(err => console.error("SW registration failed", err));
+        }
     }, []);
 
     return (

@@ -19,10 +19,19 @@ const playball = Playball({
 export const metadata: Metadata = {
   title: "Daawat E Ramzaan | India's Biggest Ramzaan Experience",
   description: "Shop. Indulge. Immerse. Experience the magic of Ramzaan at Hyderabad's grandest cultural festival.",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Daawat E Ramzaan",
+  },
+  icons: {
+    icon: "/der-small.png",
+    shortcut: "/der-small.png",
+    apple: "/der-small.png",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
   },
 };
 
@@ -41,10 +50,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* PWA meta tags for maximum compatibility */}
+        <link rel="apple-touch-icon" href="/der-small.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/der-small.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/der-small.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/der-small.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Daawat E Ramzaan" />
+        <meta name="application-name" content="Daawat E Ramzaan" />
+        <meta name="msapplication-TileColor" content="#2b5ea7" />
+        <meta name="msapplication-TileImage" content="/der-small.png" />
+      </head>
       <body className={`${outfit.variable} ${playball.variable} antialiased selection:bg-brand-gold selection:text-brand-blue`}>
         <AppShell>{children}</AppShell>
       </body>
     </html>
   );
 }
-

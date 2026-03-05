@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Map, ShoppingBag, Ticket, Bell } from "lucide-react";
 import { CharminarIcon } from "./brand-elements";
+import { PWAInstallButton } from "./pwa-install";
 import { motion } from "framer-motion";
 
 const navItems = [
     { icon: CharminarIcon, label: "Home", href: "/" },
-    { icon: Map, label: "Map", href: "/map" },
+    // { icon: Map, label: "Map", href: "/map" },
     { icon: ShoppingBag, label: "Bazaar", href: "/bazaar" },
-    { icon: Ticket, label: "Tickets", href: "/tickets" },
+    // { icon: Ticket, label: "Tickets", href: "/tickets" },
     { icon: Bell, label: "Updates", href: "/updates" },
 ];
 
@@ -65,9 +66,7 @@ export function Navbar() {
                 </h1>
             </div>
             <div className="flex items-center gap-2">
-                <span className="text-[10px] bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded-full border border-brand-gold/30 font-medium">
-                    PROTOTYPE
-                </span>
+                <PWAInstallButton />
             </div>
         </header>
     );

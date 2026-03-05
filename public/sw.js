@@ -1,6 +1,77 @@
-// Service Worker for Web Push Notifications
-// Standard Web Push API — no Firebase needed
+// Service Worker for Daawat-E-Ramzaan PWA
+// Handles: Push Notifications, Offline Caching, Install
 
+const CACHE_NAME = 'der-v1';
+const OFFLINE_URL = '/';
+
+// Assets to pre-cache for offline support
+const PRECACHE_ASSETS = [
+    '/',
+    '/der-small.png',
+    '/der-logo.svg',
+    '/manifest.json',
+];
+
+// Install: pre-cache essentials
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(PRECACHE_ASSETS);
+        })
+    );
+    self.skipWaiting();
+});
+
+// Activate: clean old caches
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames
+                    .filter((name) => name !== CACHE_NAME)
+                    .map((name) => caches.delete(name))
+            );
+        }).then(() => clients.claim())
+    );
+});
+
+// Fetch: network-first with cache fallback
+self.addEventListener('fetch', (event) => {
+    // Skip non-GET requests
+    if (event.request.method !== 'GET') return;
+
+    // Skip API calls and external requests
+    const url = new URL(event.request.url);
+    if (url.origin !== self.location.origin) return;
+    if (url.pathname.startsWith('/api/')) return;
+
+    event.respondWith(
+        fetch(event.request)
+            .then((response) => {
+                // Cache successful responses
+                if (response.ok) {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+                }
+                return response;
+            })
+            .catch(() => {
+                // Serve from cache if network fails
+                return caches.match(event.request).then((cachedResponse) => {
+                    if (cachedResponse) return cachedResponse;
+                    // For navigation requests, serve the offline page
+                    if (event.request.mode === 'navigate') {
+                        return caches.match(OFFLINE_URL);
+                    }
+                    return new Response('Offline', { status: 503 });
+                });
+            })
+    );
+});
+
+// Push Notifications
 self.addEventListener('push', (event) => {
     console.log('[SW] Push event received');
 
@@ -16,8 +87,8 @@ self.addEventListener('push', (event) => {
 
     const options = {
         body: data.body,
-        icon: '/logo.png',
-        badge: '/logo.png',
+        icon: '/der-small.png',
+        badge: '/der-small.png',
         vibrate: [200, 100, 200],
         tag: 'der-notification',
         renotify: true,
@@ -47,12 +118,4 @@ self.addEventListener('notificationclick', (event) => {
             }
         })
     );
-});
-
-self.addEventListener('install', (event) => {
-    self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-    event.waitUntil(clients.claim());
 });

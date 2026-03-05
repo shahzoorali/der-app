@@ -9,26 +9,60 @@ import {
     isNotificationsSupported,
 } from "@/lib/notifications";
 
+/**
+ * NotificationPrompt
+ * 
+ * Behavior:
+ * 1. If notifications are already enabled → never shows
+ * 2. If browser permission is "denied" → never shows (user blocked at OS level)
+ * 3. First visit, never interacted → shows after 5 seconds
+ * 4. User dismissed without enabling (clicked "Later") → shows again on NEXT visit (session-based)
+ * 5. If notifications neither enabled nor disabled and user visits again → shows the prompt
+ */
 export function NotificationPrompt() {
     const [showPrompt, setShowPrompt] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        // Don't show if already enabled, dismissed, or not supported
+        // Don't show if not supported
         if (!isNotificationsSupported()) return;
+
+        // Don't show if already enabled
         if (isNotificationsEnabled()) return;
 
+        // Don't show if the browser permission was explicitly denied (blocked at OS/browser level)
+        if (typeof Notification !== "undefined" && Notification.permission === "denied") return;
+
+        // Check visit & dismiss history
+        const dismissedInSession = sessionStorage.getItem("der-notification-dismissed-session");
         const dismissed = localStorage.getItem("der-notification-dismissed");
-        if (dismissed) {
-            // Check if it was dismissed more than 3 days ago — ask again
-            const dismissedAt = new Date(dismissed).getTime();
-            const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
-            if (Date.now() - dismissedAt < threeDaysMs) return;
+        const visitCount = parseInt(localStorage.getItem("der-notification-visit-count") || "0", 10);
+
+        // Increment visit count on each new session
+        if (!sessionStorage.getItem("der-notification-session-tracked")) {
+            sessionStorage.setItem("der-notification-session-tracked", "true");
+            localStorage.setItem("der-notification-visit-count", String(visitCount + 1));
         }
 
-        // Show after a 5-second delay
-        const timer = setTimeout(() => setShowPrompt(true), 5000);
-        return () => clearTimeout(timer);
+        // If dismissed in THIS session, don't show again in this session
+        if (dismissedInSession) return;
+
+        // If user dismissed previously (in a past session), show again on this visit
+        // The key difference: we use sessionStorage to track per-session dismissal
+        // and localStorage to know they've been prompted before
+
+        // If notifications are in "default" state (never accepted/denied) and user has visited before
+        // OR if the user dismissed in a previous session → show the prompt
+        const shouldShow =
+            Notification.permission === "default" || // Never asked at browser level
+            (dismissed && !dismissedInSession); // Dismissed before, but new session
+
+        if (shouldShow) {
+            // Show after a 5-second delay for first visit, 3-second delay for returning users
+            const delay = dismissed ? 3000 : 5000;
+            const timer = setTimeout(() => setShowPrompt(true), delay);
+            return () => clearTimeout(timer);
+        }
     }, []);
 
     async function handleEnable() {
@@ -36,10 +70,13 @@ export function NotificationPrompt() {
         try {
             const subscription = await requestNotificationPermission();
             if (subscription) {
+                // Success — clear all dismiss records
+                localStorage.removeItem("der-notification-dismissed");
+                sessionStorage.removeItem("der-notification-dismissed-session");
                 setShowPrompt(false);
             } else {
-                // Permission denied or failed
-                setShowPrompt(false);
+                // Permission denied or failed — treat as dismiss
+                handleDismiss();
             }
         } catch (error) {
             console.error("Failed to enable notifications:", error);
@@ -48,6 +85,9 @@ export function NotificationPrompt() {
     }
 
     function handleDismiss() {
+        // Mark dismissed for this session (won't show again until next visit)
+        sessionStorage.setItem("der-notification-dismissed-session", "true");
+        // Mark dismissed with timestamp (will trigger re-prompt on next session/visit)
         localStorage.setItem("der-notification-dismissed", new Date().toISOString());
         setShowPrompt(false);
     }

@@ -1,0 +1,44 @@
+{
+    "name": "Daawat-E-Ramzaan",
+    "short_name": "DER",
+    "description": "India's Biggest Ramzaan Experience - Shop. Indulge. Immerse.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#fdfaf5",
+    "theme_color": "#2b5ea7",
+    "categories": [
+        "entertainment",
+        "food",
+        "shopping"
+    ],
+    "lang": "en",
+    "dir": "ltr",
+    "icons": [
+        {
+            "src": "/der-small.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/der-small.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/der-small.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/der-small.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
