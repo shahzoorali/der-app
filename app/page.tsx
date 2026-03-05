@@ -104,11 +104,17 @@ export default function Home() {
         {/* Uber Partnership Offer — matches uber.com design */}
         <section className="mb-10 relative overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-sm font-uber">
           {/* Uber header bar */}
-          <div className="bg-black px-6 py-4 flex items-center justify-between">
-            <span className="text-white text-xl font-normal tracking-tight" style={{ fontFamily: "'UberMove', sans-serif" }}>Uber</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] font-bold text-white/50 uppercase tracking-widest">×</span>
-              <span className="font-herb text-white text-sm">Daawat-e-Ramzaan</span>
+          <div className="bg-gradient-to-r from-black via-zinc-900 to-black px-6 py-4 flex items-center justify-between relative overflow-hidden">
+            {/* Decorative background reflections */}
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div className="absolute top-0 left-1/4 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+
+            <span className="relative z-10 text-white text-xl font-medium tracking-tight drop-shadow-sm" style={{ fontFamily: "'UberMove', sans-serif" }}>Uber</span>
+            <div className="relative z-10 flex items-center gap-3">
+              <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/5">
+                <span className="text-[8px] font-bold text-white/70">×</span>
+              </div>
+              <span className="font-herb text-white/90 text-[15px] drop-shadow-sm">Daawat-e-Ramzaan</span>
             </div>
           </div>
 
@@ -127,7 +133,7 @@ export default function Home() {
                   <Percent className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-[10px] font-bold text-green-600 uppercase tracking-widest mb-0.5">Special Festival Offer</div>
+                  <div className="text-[10px] font-bold text-green-600 uppercase tracking-widest mb-0.5">Uber Sponsored Offer</div>
                   <div className="text-base font-black text-black leading-tight tracking-tight">50% Off 2-Way Trip</div>
                   <div className="text-xs text-gray-500">Pickup & drop to Kings Palace</div>
                 </div>
@@ -149,7 +155,7 @@ export default function Home() {
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white group-hover:text-black transition-all duration-300">
-                    <Car className="w-6 h-6" />
+                    <img src="/top_bar_rides_3d.png" alt="Uber Ride" className="w-6 h-6 object-contain" />
                   </div>
                   <div className="text-left">
                     <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-0.5 group-hover:text-gray-300 transition-colors">Launch App</span>
