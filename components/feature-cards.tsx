@@ -33,10 +33,13 @@ export function VendorCard({ vendor }: { vendor: any }) {
                     "{vendor.specialty}"
                 </p>
             </div>
+            {/* Hide "Navigate Me" button for now */}
+            {/* 
             <button className="flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl bg-brand-blue/5 hover:bg-brand-gold transition-colors text-brand-blue border border-brand-blue/10 flex-shrink-0 active:scale-95">
                 <Navigation className="w-4 h-4" />
                 <span className="text-[8px] font-bold uppercase tracking-widest text-center leading-tight">Navigate<br />Me</span>
             </button>
+            */}
         </motion.div>
     );
 }

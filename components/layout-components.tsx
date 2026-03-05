@@ -58,9 +58,6 @@ export function Navbar() {
     return (
         <header className="sticky top-0 z-40 w-full bg-brand-blue px-6 py-4 flex items-center justify-between shadow-lg">
             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-brand-gold rounded-full flex items-center justify-center text-brand-blue font-bold text-xs ring-2 ring-white/20">
-                    DER
-                </div>
                 <h1 className="text-white font-herb text-xl font-normal tracking-tight">
                     Daawat-E-Ramzaan
                 </h1>
