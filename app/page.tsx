@@ -115,37 +115,65 @@ export default function Home() {
             <h3 className="text-black font-black text-2xl tracking-tight mb-1 leading-tight">
               Go to <span className="font-herb font-normal">Daawat-e-Ramzaan</span>
             </h3>
-            <p className="text-gray-500 text-sm mb-5">Get <span className="font-black text-black">50% off</span> on your ride to & from the venue</p>
+            <p className="text-gray-500 text-sm mb-6">Arrive in style. Get <span className="font-black text-black">50% off</span> on your ride.</p>
 
-            {/* Offer badge */}
-            <div className="flex items-center gap-3 mb-5 bg-green-50 rounded-xl p-3 border border-green-100">
-              <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Percent className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-bold text-black">50% off — 2-way trip</div>
-                <div className="text-xs text-gray-500">Pickup & drop to Kings Palace covered</div>
+            {/* Offer badge — redesign as a voucher */}
+            <div className="relative mb-6 group cursor-default">
+              <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative flex items-center gap-4 bg-green-50 rounded-2xl p-4 border border-green-100 overflow-hidden">
+                <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-200">
+                  <Percent className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-[10px] font-bold text-green-600 uppercase tracking-widest mb-0.5">Special Festival Offer</div>
+                  <div className="text-base font-black text-black leading-tight tracking-tight">50% Off 2-Way Trip</div>
+                  <div className="text-xs text-gray-500">Pickup & drop to Kings Palace</div>
+                </div>
+                {/* Decorative circle cuts for voucher look */}
+                <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full border border-green-100" />
               </div>
             </div>
 
-            {/* CTA — Uber black button style */}
+            {/* CTA — Premium Uber Button */}
             <a
               href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[nickname]=Kings%20Palace&dropoff[formatted_address]=Kings%20Palace%20Gudimalkapur"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center bg-black text-white font-bold text-sm py-3.5 rounded-lg hover:bg-gray-900 active:scale-[0.98] transition-all"
+              className="group relative block w-full bg-black text-white p-4 rounded-2xl overflow-hidden shadow-2xl shadow-black/20 active:scale-[0.98] transition-all"
             >
-              Book Uber
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
+
+              <div className="flex items-center justify-between relative z-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white group-hover:text-black transition-all duration-300">
+                    <Car className="w-6 h-6" />
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-0.5 group-hover:text-gray-300 transition-colors">Launch App</span>
+                    <span className="block text-lg font-black tracking-tight leading-none" style={{ fontFamily: "'UberMove', sans-serif" }}>Book Your Uber</span>
+                  </div>
+                </div>
+                <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                  <ArrowLeftRight className="w-5 h-5 opacity-40 group-hover:opacity-100" />
+                </div>
+              </div>
             </a>
 
             {/* Farah Khan Instagram Embed */}
-            <div className="mt-6 pt-5 border-t border-gray-100">
-              <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Brand Ambassador Farah Khan on this partnership</div>
-              <InstagramEmbed url="https://www.instagram.com/p/DVBoGFwAVPP/" />
+            <div className="mt-8 pt-6 border-t border-gray-100">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="h-px w-6 bg-gray-200" />
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">Special Message FROM Farah Khan</div>
+                <div className="h-px w-6 bg-gray-200" />
+              </div>
+              <div className="rounded-2xl overflow-hidden border border-gray-100 bg-gray-50/50 p-1">
+                <InstagramEmbed url="https://www.instagram.com/p/DVBoGFwAVPP/" />
+              </div>
             </div>
 
-            <p className="text-[9px] text-center text-gray-300 font-medium uppercase tracking-widest mt-4">
-              Ride with Uber • Shop at <span className="font-herb normal-case tracking-normal text-[11px]">Daawat-e-Ramzaan</span>
+            <p className="text-[9px] text-center text-gray-300 font-medium uppercase tracking-[0.3em] mt-6">
+              Official Mobility Partner • <span className="text-black/40">Uber × Daawat-e-Ramzaan</span>
             </p>
           </div>
         </section>

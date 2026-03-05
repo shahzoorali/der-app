@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @font-face {
   font-family: 'UberMove';
   src: url('https://tb-static.uber.com/prod/uber-static/UberMove-Regular.woff2') format('woff2');
@@ -26,6 +28,7 @@
   --font-script: var(--font-playball), cursive;
   --font-herb: 'JAFHerb', serif;
   --font-uber: 'UberMove', sans-serif;
+  --font-arabic: 'Amiri', serif;
 }
 
 :root {
@@ -58,4 +61,16 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/water-color.png");
   opacity: 0.1;
   pointer-events: none;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.font-arabic {
+  font-family: 'Amiri', serif !important;
 }

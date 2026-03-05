@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import timetableData from "@/data/timetable.json";
-import { Clock, Moon, Sun } from "lucide-react";
+import { Clock, Moon, Sun, Volume2, Pause, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function TimetableCard() {
@@ -10,6 +10,17 @@ export function TimetableCard() {
     const [activeDayIndex, setActiveDayIndex] = useState(0);
     const [countdown, setCountdown] = useState("");
     const [nextEvent, setNextEvent] = useState<"suhoor" | "iftar" | null>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const toggleAudio = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play().catch(e => console.error("Audio play failed:", e));
+        }
+    };
 
     useEffect(() => {
         // Update current time every second
@@ -147,7 +158,67 @@ export function TimetableCard() {
                     </div>
                 </div>
 
-                <p className="text-[10px] text-center text-white/40 mt-4 uppercase tracking-[0.2em] font-medium">Times based on Hyderabad (Hanafi)</p>
+                {/* Dua Section */}
+                {nextEvent === "suhoor" && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/10 text-center relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 right-0 w-16 h-16 bg-brand-gold/10 rounded-full blur-2xl -mr-8 -mt-8" />
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                            <div className="text-[10px] text-brand-gold font-bold uppercase tracking-[0.2em]">Dua for Suhoor</div>
+                            <button
+                                onClick={toggleAudio}
+                                className="w-6 h-6 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-brand-blue transition-colors outline-none"
+                            >
+                                {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+                            </button>
+                            <audio
+                                ref={audioRef}
+                                src="/audio/suhoor.mp3"
+                                onPlay={() => setIsPlaying(true)}
+                                onPause={() => setIsPlaying(false)}
+                                onEnded={() => setIsPlaying(false)}
+                            />
+                        </div>
+                        <div className="text-2xl mb-4 leading-loose font-medium font-arabic" dir="rtl">وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ</div>
+                        <div className="text-xs font-bold text-white mb-2 italic px-2">"Wa bisawmi ghadinn nawaiytu min shahri Ramadan"</div>
+                        <div className="text-[10px] text-white/60 leading-relaxed font-medium">“I intend to keep the fast for tomorrow in the month of Ramadan.”</div>
+                    </motion.div>
+                )}
+
+                {nextEvent === "iftar" && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/10 text-center relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 right-0 w-16 h-16 bg-brand-gold/10 rounded-full blur-2xl -mr-8 -mt-8" />
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                            <div className="text-[10px] text-brand-gold font-bold uppercase tracking-[0.2em]">Dua for Iftar</div>
+                            <button
+                                onClick={toggleAudio}
+                                className="w-6 h-6 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-brand-blue transition-colors outline-none"
+                            >
+                                {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+                            </button>
+                            <audio
+                                ref={audioRef}
+                                src="/audio/iftar.mp3"
+                                onPlay={() => setIsPlaying(true)}
+                                onPause={() => setIsPlaying(false)}
+                                onEnded={() => setIsPlaying(false)}
+                            />
+                        </div>
+                        <div className="text-lg mb-1 leading-relaxed opacity-80 font-arabic" dir="rtl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+                        <div className="text-xl mb-4 leading-loose font-medium font-arabic" dir="rtl">اللَّهُمَّ لَكَ صُمْتُ وَ عَلَى رِزْقِكَ أَفْطَرْتُ وَ عَلَيْكَ تَوَكَّلْتُ</div>
+                        <div className="text-xs font-bold text-white mb-2 italic px-2">"Allaahumma Laka S'umtu Wa A'laa Rizqika Aft'artuwa A'layka Tawawkkaltu"</div>
+                        <div className="text-[10px] text-white/60 leading-relaxed font-medium px-4">“O my Allah, for Thee, I fast, and with the food Thou gives me I break the fast, and I rely on Thee.”</div>
+                    </motion.div>
+                )}
+
+                <p className="text-[10px] text-center text-white/40 mt-5 uppercase tracking-[0.3em] font-medium">Times based on Hyderabad (Hanafi)</p>
             </div>
         </motion.div>
     );
