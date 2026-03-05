@@ -3,33 +3,15 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
-// Charminar SVG silhouette inspired by the Daawat E Ramzaan logo
+// Charminar icon using PNG from der-small.png
 function CharminarIcon({ className }: { className?: string }) {
     return (
-        <svg viewBox="0 0 200 260" className={className} fill="currentColor">
-            {/* Base arch */}
-            <path d="M30 260 L30 140 Q30 120 50 120 L80 120 L80 160 Q100 130 120 160 L120 120 L150 120 Q170 120 170 140 L170 260 Z" opacity="0.9" />
-            {/* Central arch */}
-            <path d="M70 260 L70 180 Q100 150 130 180 L130 260 Z" fill="white" opacity="0.15" />
-            {/* Left minaret */}
-            <rect x="15" y="80" width="16" height="180" rx="3" />
-            <circle cx="23" cy="75" r="10" />
-            <path d="M23 30 L18 65 L28 65 Z" />
-            <circle cx="23" cy="28" r="4" />
-            {/* Right minaret */}
-            <rect x="169" y="80" width="16" height="180" rx="3" />
-            <circle cx="177" cy="75" r="10" />
-            <path d="M177 30 L172 65 L182 65 Z" />
-            <circle cx="177" cy="28" r="4" />
-            {/* Central dome */}
-            <path d="M75 120 Q100 60 125 120" />
-            <circle cx="100" cy="58" r="5" />
-            <path d="M100 25 L97 53 L103 53 Z" />
-            <circle cx="100" cy="22" r="3" />
-            {/* Small domes */}
-            <path d="M50 120 Q65 95 80 120" />
-            <path d="M120 120 Q135 95 150 120" />
-        </svg>
+        <img
+            src="/der-small.png"
+            alt="Charminar"
+            className={className}
+            style={{ objectFit: 'contain' }}
+        />
     );
 }
 

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Map, ShoppingBag, Ticket, Bell } from "lucide-react";
+import { CharminarIcon } from "./brand-elements";
 import { motion } from "framer-motion";
 
 const navItems = [
-    { icon: Home, label: "Home", href: "/" },
+    { icon: CharminarIcon, label: "Home", href: "/" },
     { icon: Map, label: "Map", href: "/map" },
     { icon: ShoppingBag, label: "Bazaar", href: "/bazaar" },
     { icon: Ticket, label: "Tickets", href: "/tickets" },
