@@ -38,7 +38,7 @@ async function getVapidKeys(): Promise<VapidKeys> {
     return cachedVapidKeys!;
 }
 
-async function getAllSubscriptions(): Promise<PushSubscription[]> {
+async function getAllSubscriptions(tag?: string): Promise<PushSubscription[]> {
     const subs: PushSubscription[] = [];
     let lastKey: any = undefined;
 
@@ -46,6 +46,8 @@ async function getAllSubscriptions(): Promise<PushSubscription[]> {
         const result = await ddb.send(new ScanCommand({
             TableName: TABLE_NAME,
             ExclusiveStartKey: lastKey,
+            FilterExpression: tag ? 'contains(tags, :tag)' : undefined,
+            ExpressionAttributeValues: tag ? { ':tag': { S: tag } } : undefined,
         }));
 
         if (result.Items) {
@@ -139,6 +141,16 @@ export const handler = async (event: any) => {
                 notification = getSuhoorNotification(detail.day);
             } else if (detail.type === 'iftar') {
                 notification = getIftarNotification(detail.day);
+            } else if (detail.type === 'drone-1h') {
+                notification = {
+                    title: '🛸 Drone Show in 1 Hour!',
+                    body: 'The Mega Drone Show at Kings Palace starts at 9:00 PM. Make sure you have a good view!',
+                };
+            } else if (detail.type === 'drone-10m') {
+                notification = {
+                    title: '🛸 Drone Show Starting Soon!',
+                    body: 'Get ready! The Mega Drone Show starts in 10 minutes at Kings Palace.',
+                };
             } else if (detail.title && detail.body) {
                 notification = { title: detail.title, body: detail.body };
             } else {
@@ -147,7 +159,8 @@ export const handler = async (event: any) => {
             }
         }
 
-        const subscriptions = await getAllSubscriptions();
+        const tag = (event.detail?.type === 'drone-1h' || event.detail?.type === 'drone-10m') ? 'drone-show' : undefined;
+        const subscriptions = await getAllSubscriptions(tag);
         console.log(`Sending to ${subscriptions.length} subscriptions`);
 
         if (subscriptions.length === 0) {

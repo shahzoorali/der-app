@@ -17,6 +17,7 @@ interface SubscriptionPayload {
         };
     };
     platform: 'web' | 'ios' | 'android';
+    tags?: string[];
 }
 
 export const handler = async (event: RegisterEvent) => {
@@ -51,6 +52,7 @@ export const handler = async (event: RegisterEvent) => {
                 p256dh: { S: body.subscription.keys.p256dh },
                 auth: { S: body.subscription.keys.auth },
                 platform: { S: body.platform },
+                tags: body.tags && body.tags.length > 0 ? { SS: body.tags } : { NULL: true },
                 createdAt: { S: now },
                 updatedAt: { S: now },
             },

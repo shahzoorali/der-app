@@ -179,6 +179,40 @@ export class InfraStack extends cdk.Stack {
       });
     }
 
+    // ── Drone Show Special Schedules (March 6th) ─────────────────────
+
+    // 1 Hour Before: 8:00 PM IST (March 6th)
+    const drone1hUtc = istToUtc('2026-03-06', '20:00:00');
+    new scheduler.CfnSchedule(this, 'DroneShow1h', {
+      name: 'der-drone-show-1h',
+      groupName: scheduleGroup.name,
+      scheduleExpression: `at(${drone1hUtc})`,
+      scheduleExpressionTimezone: 'UTC',
+      flexibleTimeWindow: { mode: 'OFF' },
+      target: {
+        arn: sendNotificationFn.functionArn,
+        roleArn: schedulerRole.roleArn,
+        input: JSON.stringify({ detail: { type: 'drone-1h' } }),
+      },
+      state: 'ENABLED',
+    });
+
+    // 10 Mins Before: 8:50 PM IST (March 6th)
+    const drone10mUtc = istToUtc('2026-03-06', '20:50:00');
+    new scheduler.CfnSchedule(this, 'DroneShow10m', {
+      name: 'der-drone-show-10m',
+      groupName: scheduleGroup.name,
+      scheduleExpression: `at(${drone10mUtc})`,
+      scheduleExpressionTimezone: 'UTC',
+      flexibleTimeWindow: { mode: 'OFF' },
+      target: {
+        arn: sendNotificationFn.functionArn,
+        roleArn: schedulerRole.roleArn,
+        input: JSON.stringify({ detail: { type: 'drone-10m' } }),
+      },
+      state: 'ENABLED',
+    });
+
     // ── Outputs ─────────────────────────────────────────────────────
 
     new cdk.CfnOutput(this, 'ApiUrl', {

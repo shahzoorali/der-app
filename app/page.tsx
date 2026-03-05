@@ -1,4 +1,5 @@
 import { Navbar, BottomNav, PageContainer } from "@/components/layout-components";
+import { DroneReminderButton } from "@/components/drone-reminder";
 import { EventCard } from "@/components/feature-cards";
 import { CharminarIcon, IslamicBorder, TileMosaicStrip, CrescentMoon } from "@/components/brand-elements";
 import { InstagramEmbed } from "@/components/instagram-embed";
@@ -257,10 +258,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-brand-blue font-bold px-6 py-3 bg-brand-gold rounded-full shadow-lg group-active:scale-95 transition-transform">
-              <Map className="w-4 h-4" />
-              KINGS PALACE
-            </div>
+            <DroneReminderButton />
 
             <p className="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">
               Only at <span className="font-herb normal-case tracking-normal text-xs">Daawat-e-Ramzaan</span>
