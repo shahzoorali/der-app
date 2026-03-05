@@ -73,6 +73,7 @@ export class InfraStack extends cdk.Stack {
         TABLE_NAME: subscriptionsTable.tableName,
         VAPID_SECRET_ARN: vapidSecret.secretArn,
         TIMETABLE_JSON: JSON.stringify(timetableData),
+        ADMIN_API_KEY: process.env.ADMIN_PASSWORD || 'ramzaan2026',
       },
       bundling: {
         minify: true,

@@ -119,6 +119,16 @@ export const handler = async (event: any) => {
         }
 
         if (event.body) {
+            // Admin API call via API Gateway
+            // Validate Authorization header
+            const adminApiKey = process.env.ADMIN_API_KEY;
+            const authHeader = event.headers?.['authorization'] || event.headers?.['Authorization'];
+
+            if (adminApiKey && authHeader !== `Bearer ${adminApiKey}`) {
+                console.warn('Unauthorized admin notification attempt');
+                return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' }) };
+            }
+
             const body = JSON.parse(event.body);
             if (!body.title || !body.body) {
                 return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing title or body' }) };

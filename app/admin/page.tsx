@@ -41,12 +41,26 @@ export default function AdminPage() {
         }
     };
 
-    const handleLogin = (e: React.FormEvent) => {
+    const [loginError, setLoginError] = useState(false);
+
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Since we are validating in the API, we just assume auth is handled via headers on requests.
-        // But to give initial gatekeeping, we will unlock the UI on basic client side input.
-        if (password) {
-            setIsAuthenticated(true);
+        setLoginError(false);
+        try {
+            const res = await fetch("/api/auth/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password }),
+            });
+
+            if (res.ok) {
+                setIsAuthenticated(true);
+            } else {
+                setLoginError(true);
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Connection error check your server");
         }
     };
 
@@ -70,7 +84,10 @@ export default function AdminPage() {
                     try {
                         await fetch(`${PUSH_API_URL}/admin/notify`, {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${password}`,
+                            },
                             body: JSON.stringify({ title, body: description }),
                         });
                     } catch (pushErr) {
@@ -104,7 +121,10 @@ export default function AdminPage() {
         try {
             const res = await fetch(`${PUSH_API_URL}/admin/notify`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${password}`
+                },
                 body: JSON.stringify({ title: pushTitle, body: pushBody }),
             });
             const data = await res.json();
@@ -150,7 +170,8 @@ export default function AdminPage() {
                     <form className="mt-8 space-y-6 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10" onSubmit={handleLogin}>
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-blue focus:border-brand-blue" />
+                            <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className={`mt-1 block w-full border ${loginError ? 'border-red-500 bg-red-50' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`} />
+                            {loginError && <p className="mt-1 text-xs text-red-600">Incorrect password. Please try again.</p>}
                         </div>
                         <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             Login
