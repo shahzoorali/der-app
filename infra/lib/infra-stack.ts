@@ -142,9 +142,9 @@ export class InfraStack extends cdk.Stack {
       // Skip past dates
       if (entry.fullDate < today) continue;
 
-      // Parse times and offset by -15 minutes
-      const suhoorTime = offsetTime(entry.suhoor, -15);
-      const iftarTime = offsetTime(entry.iftar, -15);
+      // Use exact times from the timetable
+      const suhoorTime = entry.suhoor;
+      const iftarTime = entry.iftar;
 
       // Suhoor schedule — at(YYYY-MM-DDThh:mm:00) in IST (UTC+5:30)
       const suhoorUtc = istToUtc(entry.fullDate, suhoorTime);
@@ -157,7 +157,7 @@ export class InfraStack extends cdk.Stack {
         target: {
           arn: sendNotificationFn.functionArn,
           roleArn: schedulerRole.roleArn,
-          input: JSON.stringify({ detail: { type: 'suhoor' } }),
+          input: JSON.stringify({ detail: { type: 'suhoor', day: entry.day } }),
         },
         state: 'ENABLED',
       });
@@ -173,7 +173,7 @@ export class InfraStack extends cdk.Stack {
         target: {
           arn: sendNotificationFn.functionArn,
           roleArn: schedulerRole.roleArn,
-          input: JSON.stringify({ detail: { type: 'iftar' } }),
+          input: JSON.stringify({ detail: { type: 'iftar', day: entry.day } }),
         },
         state: 'ENABLED',
       });

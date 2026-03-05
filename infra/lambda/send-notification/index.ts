@@ -72,25 +72,23 @@ async function deleteSubscription(endpoint: string): Promise<void> {
     console.log(`Deleted stale subscription: ${endpoint.substring(0, 40)}...`);
 }
 
-function getSuhoorNotification(): NotificationPayload {
-    const today = new Date().toISOString().split('T')[0];
-    const entry = TIMETABLE.find(t => t.fullDate === today);
+function getSuhoorNotification(day?: number): NotificationPayload {
+    const entry = day ? TIMETABLE.find(t => t.day === day) : TIMETABLE.find(t => t.fullDate === new Date().toISOString().split('T')[0]);
     if (entry) {
         return {
-            title: '🌙 Suhoor Reminder',
-            body: `Suhoor time is at ${formatTime(entry.suhoor)} today (Day ${entry.day}). Please complete your Suhoor before time ends.`,
+            title: '🌙 Suhoor Ends Now',
+            body: `It's ${formatTime(entry.suhoor)}. Day ${entry.day} Suhoor time is over. Please conclude your meal.`,
         };
     }
-    return { title: '🌙 Suhoor Reminder', body: 'It is time for Suhoor. Please complete your meal.' };
+    return { title: '🌙 Suhoor Ends Now', body: 'It is time to conclude your Suhoor meal.' };
 }
 
-function getIftarNotification(): NotificationPayload {
-    const today = new Date().toISOString().split('T')[0];
-    const entry = TIMETABLE.find(t => t.fullDate === today);
+function getIftarNotification(day?: number): NotificationPayload {
+    const entry = day ? TIMETABLE.find(t => t.day === day) : TIMETABLE.find(t => t.fullDate === new Date().toISOString().split('T')[0]);
     if (entry) {
         return {
             title: '🌅 Iftar Time!',
-            body: `Iftar time is at ${formatTime(entry.iftar)} today (Day ${entry.day}). Wishing you a blessed Iftar!`,
+            body: `It's ${formatTime(entry.iftar)}. Day ${entry.day} Iftar time has begun. Wishing you a blessed Iftar!`,
         };
     }
     return { title: '🌅 Iftar Time!', body: 'It is time for Iftar. Wishing you a blessed Iftar!' };
@@ -138,9 +136,9 @@ export const handler = async (event: any) => {
         } else {
             const detail = event.detail || event;
             if (detail.type === 'suhoor') {
-                notification = getSuhoorNotification();
+                notification = getSuhoorNotification(detail.day);
             } else if (detail.type === 'iftar') {
-                notification = getIftarNotification();
+                notification = getIftarNotification(detail.day);
             } else if (detail.title && detail.body) {
                 notification = { title: detail.title, body: detail.body };
             } else {
