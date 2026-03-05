@@ -7,7 +7,7 @@ const OFFLINE_URL = '/';
 // Assets to pre-cache for offline support
 const PRECACHE_ASSETS = [
     '/',
-    '/der-small.png',
+    '/der-pwa-icon.png',
     '/der-logo.svg',
     '/manifest.json',
 ];
@@ -87,8 +87,8 @@ self.addEventListener('push', (event) => {
 
     const options = {
         body: data.body,
-        icon: '/der-small.png',
-        badge: '/der-small.png',
+        icon: '/der-pwa-icon.png',
+        badge: '/der-pwa-icon.png',
         vibrate: [200, 100, 200],
         tag: 'der-notification',
         renotify: true,

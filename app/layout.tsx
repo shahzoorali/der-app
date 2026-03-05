@@ -23,12 +23,12 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Daawat E Ramzaan",
+    title: "Daawat-e-Ramzaan",
   },
   icons: {
-    icon: "/der-small.png",
-    shortcut: "/der-small.png",
-    apple: "/der-small.png",
+    icon: "/der-pwa-icon.png",
+    shortcut: "/der-pwa-icon.png",
+    apple: "/der-pwa-maskable.png",
   },
   other: {
     "mobile-web-app-capable": "yes",
@@ -52,16 +52,16 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* PWA meta tags for maximum compatibility */}
-        <link rel="apple-touch-icon" href="/der-small.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/der-small.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/der-small.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/der-small.png" />
+        <link rel="apple-touch-icon" href="/der-pwa-maskable.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/der-pwa-maskable.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/der-pwa-icon.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/der-pwa-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Daawat E Ramzaan" />
-        <meta name="application-name" content="Daawat E Ramzaan" />
+        <meta name="apple-mobile-web-app-title" content="Daawat-e-Ramzaan" />
+        <meta name="application-name" content="Daawat-e-Ramzaan" />
         <meta name="msapplication-TileColor" content="#2b5ea7" />
-        <meta name="msapplication-TileImage" content="/der-small.png" />
+        <meta name="msapplication-TileImage" content="/der-pwa-maskable.png" />
       </head>
       <body className={`${outfit.variable} ${playball.variable} antialiased selection:bg-brand-gold selection:text-brand-blue`}>
         <AppShell>{children}</AppShell>

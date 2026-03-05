@@ -197,7 +197,7 @@ function IOSInstallModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
                                 <div className="flex justify-center mb-4">
                                     <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-brand-blue/10">
                                         <img
-                                            src="/der-small.png"
+                                            src="/der-pwa-maskable.png"
                                             alt="Daawat E Ramzaan"
                                             className="w-full h-full object-contain bg-white p-1"
                                         />
