@@ -15,6 +15,15 @@ export default function AdminPage() {
     const [venue, setVenue] = useState("");
     const [description, setDescription] = useState("");
     const [priority, setPriority] = useState("medium");
+    const [sendPush, setSendPush] = useState(false);
+
+    // Push notification state
+    const [pushTitle, setPushTitle] = useState("");
+    const [pushBody, setPushBody] = useState("");
+    const [pushLoading, setPushLoading] = useState(false);
+    const [pushResult, setPushResult] = useState<string | null>(null);
+
+    const PUSH_API_URL = process.env.NEXT_PUBLIC_NOTIFICATION_API_URL || '';
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -56,11 +65,24 @@ export default function AdminPage() {
                 }),
             });
             if (res.ok) {
+                // Also send push if checkbox enabled
+                if (sendPush && PUSH_API_URL) {
+                    try {
+                        await fetch(`${PUSH_API_URL}/admin/notify`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ title, body: description }),
+                        });
+                    } catch (pushErr) {
+                        console.error('Push notification failed:', pushErr);
+                    }
+                }
                 // reset form
                 setTitle("");
                 setTime("");
                 setVenue("");
                 setDescription("");
+                setSendPush(false);
                 await fetchAnnouncements();
             } else {
                 alert("Failed to add - check password");
@@ -69,6 +91,35 @@ export default function AdminPage() {
             console.error(e);
         }
         setLoading(false);
+    };
+
+    const handleSendPush = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!PUSH_API_URL) {
+            alert('Push API URL not configured. Set NEXT_PUBLIC_NOTIFICATION_API_URL in .env.local');
+            return;
+        }
+        setPushLoading(true);
+        setPushResult(null);
+        try {
+            const res = await fetch(`${PUSH_API_URL}/admin/notify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: pushTitle, body: pushBody }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setPushResult(`✅ Sent to ${data.sent} devices (${data.failed} failed, ${data.staleRemoved} stale removed)`);
+                setPushTitle('');
+                setPushBody('');
+            } else {
+                setPushResult(`❌ Failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (e) {
+            console.error(e);
+            setPushResult('❌ Network error');
+        }
+        setPushLoading(false);
     };
 
     const handleDelete = async (id: string) => {
@@ -159,6 +210,10 @@ export default function AdminPage() {
                         <button type="submit" disabled={loading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
                             {loading ? "Broadcasting..." : "Broadcast Announcement"}
                         </button>
+                        <label className="flex items-center gap-2 mt-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" checked={sendPush} onChange={e => setSendPush(e.target.checked)} className="rounded border-gray-300" />
+                            Also send as Push Notification to all users
+                        </label>
                     </form>
                 </div>
 
@@ -189,6 +244,28 @@ export default function AdminPage() {
                             </li>
                         ))}
                     </ul>
+                </div>
+
+                {/* Standalone Push Notification */}
+                <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">📢 Send Push Notification</h3>
+                    <p className="text-sm text-gray-500 mb-4">Send a push notification to all registered devices without creating an announcement.</p>
+                    <form onSubmit={handleSendPush} className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Title</label>
+                            <input type="text" required value={pushTitle} onChange={e => setPushTitle(e.target.value)} placeholder="e.g. 🎤 Qawwali Night starting now!" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Message</label>
+                            <textarea required rows={2} value={pushBody} onChange={e => setPushBody(e.target.value)} placeholder="e.g. Head to the Cultural Stage for an amazing performance!" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+                        </div>
+                        <button type="submit" disabled={pushLoading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
+                            {pushLoading ? "Sending..." : "🔔 Send Push Notification"}
+                        </button>
+                        {pushResult && (
+                            <p className={`text-sm font-medium ${pushResult.startsWith('✅') ? 'text-green-600' : 'text-red-600'}`}>{pushResult}</p>
+                        )}
+                    </form>
                 </div>
             </div>
         </div>

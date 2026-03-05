@@ -4,7 +4,14 @@ import { useState } from "react";
 import { Navbar, BottomNav, PageContainer } from "@/components/layout-components";
 import zones from "@/data/zones.json";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from 'next/dynamic';
 import { MapPin, Info, ArrowRight, Expand } from "lucide-react";
+
+// Import MapComponent dynamically to avoid SSR issues with Leaflet
+const MapComponent = dynamic(() => import('@/components/map-component'), {
+    ssr: false,
+    loading: () => <div className="w-full h-full bg-gray-100 animate-pulse rounded-2xl flex items-center justify-center font-bold text-brand-blue/20">LOADING MAP...</div>
+});
 
 export default function Wayfinder() {
     const [selectedZone, setSelectedZone] = useState<any>(null);
@@ -23,50 +30,21 @@ export default function Wayfinder() {
                     </button>
                 </section>
 
-                {/* Interactive SVG Map */}
-                <div className="relative aspect-[4/5] bg-white rounded-3xl shadow-lg border border-brand-blue/5 overflow-hidden mb-6 p-4">
-                    {/* Watercolor background within map */}
-                    <div className="absolute inset-0 watercolor-texture opacity-20" />
+                {/* Interactive Map */}
+                <div className="relative aspect-[4/5] bg-white rounded-3xl shadow-lg border border-brand-blue/5 overflow-hidden mb-6">
+                    {/* Watercolor background within map container */}
+                    <div className="absolute inset-0 watercolor-texture opacity-20 pointer-events-none z-0" />
 
-                    <svg
-                        viewBox="0 0 1000 1200"
-                        className="w-full h-full relative z-10"
-                        onClick={() => setSelectedZone(null)}
-                    >
-                        {zones.map(zone => (
-                            <motion.path
-                                key={zone.id}
-                                d={zone.path}
-                                fill={zone.color}
-                                fillOpacity={selectedZone?.id === zone.id ? 0.3 : 0.1}
-                                stroke={zone.color}
-                                strokeWidth={selectedZone?.id === zone.id ? 8 : 4}
-                                className="cursor-pointer transition-all"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedZone(zone);
-                                }}
-                                whileHover={{ fillOpacity: 0.2 }}
-                            />
-                        ))}
-
-                        {/* Labels */}
-                        {zones.map(zone => (
-                            <text
-                                key={`label-${zone.id}`}
-                                x={zone.id === "z1" ? 175 : zone.id === "z2" ? 825 : 525}
-                                y={zone.id === "z1" ? 225 : zone.id === "z2" ? 175 : 400}
-                                textAnchor="middle"
-                                className="fill-brand-blue font-bold text-4xl pointer-events-none"
-                                style={{ textTransform: "uppercase", letterSpacing: "2px" }}
-                            >
-                                {zone.name}
-                            </text>
-                        ))}
-                    </svg>
+                    <div className="w-full h-full relative z-10">
+                        <MapComponent
+                            imageUrl="/map-placeholder.jpg" // User to provide final image
+                            imageWidth={1000}
+                            imageHeight={1250}
+                        />
+                    </div>
 
                     {/* Overlay Controls */}
-                    <div className="absolute bottom-4 left-4 right-4 flex justify-between pointer-events-none">
+                    <div className="absolute bottom-4 left-4 right-4 flex justify-between pointer-events-none z-20">
                         <div className="bg-white/90 backdrop-blur px-3 py-2 rounded-xl shadow-sm flex items-center gap-2 pointer-events-auto border border-brand-blue/5 text-[10px] font-bold text-brand-blue">
                             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                             LIVE CROWD DATA
