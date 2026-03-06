@@ -49,24 +49,25 @@ export function TimetableCard() {
 
         setActiveDayIndex(currentIndex);
 
-        // Determine if next event is Suhoor or Iftar
+        // Determine if next event is Suhoor or Iftar (with 10min buffer)
         const todayData = timetableData[currentIndex];
+        const BUFFER_MS = 10 * 60 * 1000; // 10 minutes buffer
 
-        // Construct Date objects for today's suhoor and iftar
         const suhoorTime = new Date(`${todayData.fullDate}T${todayData.suhoor}`);
         const iftarTime = new Date(`${todayData.fullDate}T${todayData.iftar}`);
 
         let targetTime: Date | null = null;
         let eventType: "suhoor" | "iftar" | null = null;
 
-        if (now < suhoorTime) {
+        // Current time with buffer subtraction for event switching logic
+        // This keeps the 'suhoor' event active until 10 mins after suhoorTime
+        if (now < new Date(suhoorTime.getTime() + BUFFER_MS)) {
             targetTime = suhoorTime;
             eventType = "suhoor";
-        } else if (now < iftarTime) {
+        } else if (now < new Date(iftarTime.getTime() + BUFFER_MS)) {
             targetTime = iftarTime;
             eventType = "iftar";
         } else {
-            // It's past Iftar today, look at tomorrow's Suhoor if available
             if (currentIndex + 1 < timetableData.length) {
                 const tomorrowData = timetableData[currentIndex + 1];
                 targetTime = new Date(`${tomorrowData.fullDate}T${tomorrowData.suhoor}`);
@@ -91,8 +92,11 @@ export function TimetableCard() {
                 } else {
                     setCountdown(`${formatNum(m)}m ${formatNum(s)}s`);
                 }
-            } else {
+            } else if (diffMs > -BUFFER_MS) {
+                // Within 10 mins after the event
                 setCountdown("Time's up!");
+            } else {
+                setCountdown("Ramadan Mubarak");
             }
         } else {
             setCountdown("Ramadan Mubarak");
