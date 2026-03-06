@@ -18,6 +18,8 @@ interface SubscriptionPayload {
     };
     platform: 'web' | 'ios' | 'android';
     tags?: string[];
+    name?: string | null;
+    phone?: string | null;
 }
 
 export const handler = async (event: RegisterEvent) => {
@@ -45,17 +47,28 @@ export const handler = async (event: RegisterEvent) => {
 
         const now = new Date().toISOString();
 
+        const item: Record<string, any> = {
+            endpoint: { S: body.subscription.endpoint },
+            p256dh: { S: body.subscription.keys.p256dh },
+            auth: { S: body.subscription.keys.auth },
+            platform: { S: body.platform },
+            createdAt: { S: now },
+            updatedAt: { S: now },
+        };
+
+        if (body.tags && body.tags.length > 0) {
+            item.tags = { SS: body.tags };
+        }
+        if (body.name) {
+            item.name = { S: body.name };
+        }
+        if (body.phone) {
+            item.phone = { S: body.phone };
+        }
+
         await ddb.send(new PutItemCommand({
             TableName: TABLE_NAME,
-            Item: {
-                endpoint: { S: body.subscription.endpoint },
-                p256dh: { S: body.subscription.keys.p256dh },
-                auth: { S: body.subscription.keys.auth },
-                platform: { S: body.platform },
-                tags: body.tags && body.tags.length > 0 ? { SS: body.tags } : { NULL: true },
-                createdAt: { S: now },
-                updatedAt: { S: now },
-            },
+            Item: item,
         }));
 
         console.log(`Subscription registered: ${body.platform} - ${body.subscription.endpoint.substring(0, 40)}...`);

@@ -39,13 +39,23 @@ export function DroneReminderButton() {
             if (sub) {
                 // Tag them on the backend
                 const API_URL = process.env.NEXT_PUBLIC_NOTIFICATION_API_URL || '';
+
+                let name = null;
+                let phone = null;
+                if (typeof window !== 'undefined') {
+                    name = localStorage.getItem('der-user-name');
+                    phone = localStorage.getItem('der-user-phone');
+                }
+
                 await fetch(`${API_URL}/register-token`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         subscription: sub.toJSON(),
                         platform: 'web',
-                        tags: ['drone-show']
+                        tags: ['drone-show'],
+                        ...(name && { name }),
+                        ...(phone && { phone })
                     }),
                 });
                 localStorage.setItem('drone-show-reminded', 'true');

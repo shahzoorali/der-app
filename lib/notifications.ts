@@ -78,12 +78,21 @@ async function registerSubscriptionWithBackend(subscription: PushSubscription) {
     }
 
     try {
+        let name = null;
+        let phone = null;
+        if (typeof window !== 'undefined') {
+            name = localStorage.getItem('der-user-name');
+            phone = localStorage.getItem('der-user-phone');
+        }
+
         const response = await fetch(`${API_URL}/register-token`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 subscription: subscription.toJSON(),
                 platform: 'web',
+                ...(name && { name }),
+                ...(phone && { phone })
             }),
         });
 

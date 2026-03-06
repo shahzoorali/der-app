@@ -9,6 +9,8 @@ interface Subscriber {
     auth: string;
     p256dh: string;
     platform?: string;
+    name?: string;
+    phone?: string;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -171,6 +173,9 @@ export default function SubscribersAdminPage() {
                                         Subscribed On
                                     </th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Registered User
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Platform
                                     </th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -181,13 +186,13 @@ export default function SubscribersAdminPage() {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {loading && subscribers.length === 0 ? (
                                     <tr>
-                                        <td colSpan={3} className="px-6 py-12 text-center text-gray-500">
+                                        <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
                                             Loading subscribers...
                                         </td>
                                     </tr>
                                 ) : currentItems.length === 0 ? (
                                     <tr>
-                                        <td colSpan={3} className="px-6 py-12 text-center text-gray-500">
+                                        <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
                                             No subscribers found.
                                         </td>
                                     </tr>
@@ -196,6 +201,21 @@ export default function SubscribersAdminPage() {
                                         <tr key={idx} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 {formatDate(sub.createdAt)}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                                {sub.name ? (
+                                                    <div className="relative group inline-block">
+                                                        <span className="font-semibold text-brand-blue cursor-help border-b border-dashed border-brand-blue/50">
+                                                            {sub.name}
+                                                        </span>
+                                                        <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-max bg-gray-900 text-white text-xs rounded py-1 px-2 z-10 shadow-lg">
+                                                            Name: {sub.name}<br />
+                                                            Phone: {sub.phone}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-400 italic">Anonymous Visitor</span>
+                                                )}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                 {sub.platform ? (

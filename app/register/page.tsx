@@ -105,6 +105,10 @@ export default function RegisterPage() {
             const data = await res.json();
 
             if (res.ok) {
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('der-user-name', name);
+                    localStorage.setItem('der-user-phone', `+91${phone}`);
+                }
                 setStep('SUCCESS');
             } else {
                 setError(data.error || 'Registration failed');
