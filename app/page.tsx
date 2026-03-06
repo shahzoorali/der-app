@@ -1,12 +1,13 @@
 import { Navbar, BottomNav, PageContainer } from "@/components/layout-components";
 import { DroneShowSection } from "@/components/drone-show-section";
+import { DayCounter } from "@/components/day-counter";
 import { EventCard } from "@/components/feature-cards";
 import { CharminarIcon, IslamicBorder, TileMosaicStrip, CrescentMoon } from "@/components/brand-elements";
 import { InstagramEmbed } from "@/components/instagram-embed";
 import { TimetableCard } from "@/components/timetable-card";
 import vendors from "@/data/vendors.json";
 import events from "@/data/events.json";
-import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Car, ArrowLeftRight, Percent, MapPin, Instagram, Utensils } from "lucide-react";
+import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Car, ArrowLeftRight, Percent, MapPin, Instagram, Utensils, Navigation } from "lucide-react";
 import Link from "next/link";
 
 const featuredEvents = events.slice(0, 3);
@@ -74,15 +75,30 @@ export default function Home() {
           <p className="text-gray-400 text-xs font-medium mb-6">Season 5 • Hyderabad</p>
 
           {/* Date & Venue */}
-          <div className="bg-brand-blue/5 rounded-2xl p-4 border border-brand-blue/10">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-brand-blue font-bold text-sm">5 – 19 March</span>
-              <span className="w-1 h-1 bg-brand-gold rounded-full" />
-              <span className="font-script text-brand-blue text-sm">Iftar to Sehri</span>
+          <a
+            href="https://maps.app.goo.gl/dFQDoRuLsJyKrQeU7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block group active:scale-[0.98] transition-transform"
+          >
+            <div className="bg-brand-blue/5 rounded-2xl p-4 border border-brand-blue/10 hover:border-brand-blue/30 transition-colors">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-brand-blue font-bold text-sm">5 – 19 March</span>
+                <span className="w-1 h-1 bg-brand-gold rounded-full" />
+                <span className="font-script text-brand-blue text-sm">Iftar to Sehri</span>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Kings Palace, Gudimalkapur</p>
+                <div className="w-5 h-5 bg-brand-blue/10 rounded-full flex items-center justify-center text-brand-blue group-hover:scale-110 transition-transform">
+                  <Navigation className="w-3 h-3 fill-current rotate-[15deg]" />
+                </div>
+              </div>
             </div>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Kings Palace, Gudimalkapur</p>
-          </div>
+          </a>
         </section>
+
+        {/* Dynamic Day Counter */}
+        <DayCounter />
 
         {/* Islamic border divider */}
         <IslamicBorder className="mb-8" />
@@ -90,7 +106,7 @@ export default function Home() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3 mb-10">
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-brand-blue/5 text-center">
-            <span className="text-brand-blue font-bold text-2xl block">15</span>
+            <span className="text-brand-blue font-bold text-2xl block">14</span>
             <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Days</span>
           </div>
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-brand-blue/5 text-center">
