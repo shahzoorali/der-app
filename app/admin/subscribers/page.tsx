@@ -137,7 +137,10 @@ export default function SubscribersAdminPage() {
                         </h1>
                         <p className="mt-2 text-sm text-gray-700">List of devices registered to receive notifications.</p>
                     </div>
-                    <div className="ml-auto">
+                    <div className="ml-auto flex gap-4 items-center">
+                        <a href="/admin/registrations" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 transition-colors">
+                            View Registrations
+                        </a>
                         <button
                             onClick={fetchSubscribers}
                             disabled={loading}
@@ -241,8 +244,8 @@ export default function SubscribersAdminPage() {
                                                     key={page}
                                                     onClick={() => setCurrentPage(page)}
                                                     className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === page
-                                                            ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                                                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                                                        ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                                                        : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                                                         }`}
                                                 >
                                                     {page}

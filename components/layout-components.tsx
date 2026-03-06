@@ -8,13 +8,14 @@ import { PWAInstallButton } from "./pwa-install";
 import { motion } from "framer-motion";
 
 const navItems = [
-    { icon: CharminarIcon, label: "Home", href: "/" },
+    { icon: ShoppingBag, label: "Shop", href: "/bazaar" },
+    { icon: CharminarIcon, label: "Indulge", href: "/" },
     // { icon: Map, label: "Map", href: "/map" },
     { icon: Camera, label: "Immerse", href: "/immerse" },
-    { icon: ShoppingBag, label: "Bazaar", href: "/bazaar" },
     // { icon: Ticket, label: "Tickets", href: "/tickets" },
     { icon: Bell, label: "Updates", href: "/updates" },
 ];
+
 
 export function BottomNav() {
     const pathname = usePathname();

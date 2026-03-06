@@ -29,6 +29,29 @@ export class InfraStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
+    const otpsTable = new dynamodb.Table(this, 'OTPsTable', {
+      tableName: 'DerOTPs',
+      partitionKey: { name: 'phone', type: dynamodb.AttributeType.STRING },
+      timeToLiveAttribute: 'expiresAt',
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY, // For testing/transient
+    });
+
+    const registrationsTable = new dynamodb.Table(this, 'RegistrationsTable', {
+      tableName: 'DerRegistrations',
+      partitionKey: { name: 'phone', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.RETAIN, // Keep registration data
+    });
+
+    const dailyRegistrationsTable = new dynamodb.Table(this, 'DailyRegistrationsTable', {
+      tableName: 'DerDailyRegistrations',
+      partitionKey: { name: 'phone', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'eventDay', type: dynamodb.AttributeType.NUMBER },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
     // ── Secrets Manager ─────────────────────────────────────────────
     // Stores VAPID keys for Web Push authentication.
     // Format: { "publicKey": "...", "privateKey": "...", "subject": "mailto:..." }

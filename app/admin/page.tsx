@@ -233,7 +233,10 @@ export default function AdminPage() {
                         <h1 className="text-3xl font-bold text-gray-900">Announcements Admin</h1>
                         <p className="mt-2 text-sm text-gray-700">Add or remove broadcasts.</p>
                     </div>
-                    <div>
+                    <div className="flex gap-4">
+                        <a href="/admin/registrations" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
+                            View Registrations
+                        </a>
                         <a href="/admin/subscribers" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             View Subscribers
                         </a>
