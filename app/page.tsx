@@ -6,7 +6,7 @@ import { InstagramEmbed } from "@/components/instagram-embed";
 import { TimetableCard } from "@/components/timetable-card";
 import vendors from "@/data/vendors.json";
 import events from "@/data/events.json";
-import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Car, ArrowLeftRight, Percent, MapPin, Instagram } from "lucide-react";
+import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Car, ArrowLeftRight, Percent, MapPin, Instagram, Utensils } from "lucide-react";
 import Link from "next/link";
 
 const featuredEvents = events.slice(0, 3);
@@ -18,6 +18,7 @@ const retailStallsCount = vendors.length - foodStallsCount;
 const categories = [
   { name: "Fashion", icon: ShoppingBag, count: new Set(vendors.filter(v => v.category === "Fashion").map(v => v.name)).size, color: "#2b5ea7" },
   { name: "Jewelry", icon: Gem, count: new Set(vendors.filter(v => v.category === "Jewelry").map(v => v.name)).size, color: "#e8c840" },
+  { name: "Food", icon: Utensils, count: new Set(vendors.filter(v => v.category === "Food").map(v => v.name)).size, color: "#db2777" },
   { name: "Home Decor", icon: Sofa, count: new Set(vendors.filter(v => v.category === "Home Decor").map(v => v.name)).size, color: "#d42027" },
   { name: "Footwear", icon: Footprints, count: new Set(vendors.filter(v => v.category === "Footwear").map(v => v.name)).size, color: "#4a8c3f" },
   { name: "Kids", icon: Baby, count: new Set(vendors.filter(v => v.category === "Kids").map(v => v.name)).size, color: "#e8840a" },
@@ -197,7 +198,7 @@ export default function Home() {
         < section className="mb-10" >
           <h3 className="text-brand-blue font-bold text-xl mb-4 flex items-center gap-2">
             <ShoppingBag className="w-5 h-5 text-brand-gold" />
-            Explore the Crescent Bazaar
+            Explore Bazaar
           </h3>
           <div className="grid grid-cols-2 gap-3">
             {categories.map(cat => (
