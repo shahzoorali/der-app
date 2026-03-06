@@ -83,7 +83,7 @@ export default function Updates() {
             <Navbar />
             <PageContainer>
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold text-brand-blue">The Town Crier</h2>
+                    <h2 className="text-2xl font-bold text-brand-blue">Announcements</h2>
                     <div className="p-2 bg-brand-gold text-brand-blue rounded-xl shadow-lg ring-4 ring-brand-gold/10 relative">
                         {/* Live indicator if we polled data in last 1min */}
                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
