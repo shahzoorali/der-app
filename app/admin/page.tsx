@@ -23,11 +23,17 @@ export default function AdminPage() {
     const [pushLoading, setPushLoading] = useState(false);
     const [pushResult, setPushResult] = useState<string | null>(null);
 
+    // Settings state
+    const [droneShowHighlightsUrl, setDroneShowHighlightsUrl] = useState("");
+    const [settingsLoading, setSettingsLoading] = useState(false);
+    const [settingsResult, setSettingsResult] = useState<string | null>(null);
+
     const PUSH_API_URL = process.env.NEXT_PUBLIC_NOTIFICATION_API_URL || '';
 
     useEffect(() => {
         if (isAuthenticated) {
             fetchAnnouncements();
+            fetchSettings();
         }
     }, [isAuthenticated]);
 
@@ -36,6 +42,18 @@ export default function AdminPage() {
             const res = await fetch("/api/announcements");
             const data = await res.json();
             setAnnouncements(data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const fetchSettings = async () => {
+        try {
+            const res = await fetch("/api/settings");
+            const data = await res.json();
+            if (data.droneShowHighlightsUrl !== undefined) {
+                setDroneShowHighlightsUrl(data.droneShowHighlightsUrl);
+            }
         } catch (e) {
             console.error(e);
         }
@@ -140,6 +158,31 @@ export default function AdminPage() {
             setPushResult('❌ Network error');
         }
         setPushLoading(false);
+    };
+
+    const handleUpdateSettings = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSettingsLoading(true);
+        setSettingsResult(null);
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${password}`
+                },
+                body: JSON.stringify({ droneShowHighlightsUrl }),
+            });
+            if (res.ok) {
+                setSettingsResult('✅ Settings updated successfully');
+            } else {
+                setSettingsResult('❌ Failed to update settings');
+            }
+        } catch (e) {
+            console.error(e);
+            setSettingsResult('❌ Network error');
+        }
+        setSettingsLoading(false);
     };
 
     const handleDelete = async (id: string) => {
@@ -292,6 +335,24 @@ export default function AdminPage() {
                         </button>
                         {pushResult && (
                             <p className={`text-sm font-medium ${pushResult.startsWith('✅') ? 'text-green-600' : 'text-red-600'}`}>{pushResult}</p>
+                        )}
+                    </form>
+                </div>
+
+                {/* App Settings */}
+                <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-8">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">⚙️ App Settings</h3>
+                    <form onSubmit={handleUpdateSettings} className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Drone Show Highlights URL (Instagram Reel)</label>
+                            <input type="text" value={droneShowHighlightsUrl} onChange={e => setDroneShowHighlightsUrl(e.target.value)} placeholder="https://www.instagram.com/reel/..." className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                            <p className="mt-1 text-xs text-gray-500">Leaving this blank will link to the main Daawat-e-Ramzaan Instagram profile.</p>
+                        </div>
+                        <button type="submit" disabled={settingsLoading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                            {settingsLoading ? "Saving..." : "Save Settings"}
+                        </button>
+                        {settingsResult && (
+                            <p className={`text-sm font-medium ${settingsResult.startsWith('✅') ? 'text-green-600' : 'text-red-600'}`}>{settingsResult}</p>
                         )}
                     </form>
                 </div>

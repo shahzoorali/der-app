@@ -1,12 +1,12 @@
 import { Navbar, BottomNav, PageContainer } from "@/components/layout-components";
-import { DroneReminderButton } from "@/components/drone-reminder";
+import { DroneShowSection } from "@/components/drone-show-section";
 import { EventCard } from "@/components/feature-cards";
 import { CharminarIcon, IslamicBorder, TileMosaicStrip, CrescentMoon } from "@/components/brand-elements";
 import { InstagramEmbed } from "@/components/instagram-embed";
 import { TimetableCard } from "@/components/timetable-card";
 import vendors from "@/data/vendors.json";
 import events from "@/data/events.json";
-import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Rocket, Cloud, Car, ArrowLeftRight, Percent, MapPin, Instagram } from "lucide-react";
+import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Car, ArrowLeftRight, Percent, MapPin, Instagram } from "lucide-react";
 import Link from "next/link";
 
 const featuredEvents = events.slice(0, 3);
@@ -217,60 +217,8 @@ export default function Home() {
         {/* Islamic border divider */}
         < IslamicBorder className="mb-8" />
 
-        {/* Drone Show Feature - Poster inspired */}
-        < section className="relative overflow-hidden rounded-3xl bg-white border border-brand-blue/10 mb-10 p-8 text-center group" >
-          {/* Watercolor background - Blue splash */}
-          < div className="absolute inset-0 watercolor-texture opacity-30 bg-[#4285f4]/5" />
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-gold/10 rounded-full blur-3xl" />
-
-          <div className="relative z-10">
-            <div className="flex justify-between items-start mb-6">
-              <div className="p-2 px-3 bg-brand-blue/5 rounded-xl border border-brand-blue/10 flex items-center gap-2">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Powered By</span>
-                <span className="text-sm font-bold text-brand-blue">Pista House</span>
-              </div>
-              <div className="flex gap-2">
-                <Rocket className="w-5 h-5 text-brand-blue animate-bounce" />
-              </div>
-            </div>
-
-            <h3 className="text-brand-blue font-black text-3xl mb-2 tracking-tighter uppercase">
-              Free <span className="text-[#4285f4]">Mega Drone</span> Show
-            </h3>
-
-            <div className="relative inline-block mb-6">
-              <div className="font-script text-2xl text-brand-red -rotate-6">Look up Hyderabad</div>
-              {/* Floating drone icons decoration */}
-              <div className="absolute -right-12 -top-4 opacity-20">
-                <Cloud className="w-8 h-8 text-brand-blue" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              <div className="bg-brand-gold/10 rounded-2xl p-4 border border-brand-gold/20">
-                <div className="text-[9px] font-bold text-brand-blue/40 uppercase tracking-widest mb-1">Date</div>
-                <div className="text-xl font-black text-brand-blue">6th March</div>
-              </div>
-              <div className="bg-brand-blue/10 rounded-2xl p-4 border border-brand-blue/20">
-                <div className="text-[9px] font-bold text-brand-blue/40 uppercase tracking-widest mb-1">Time</div>
-                <div className="text-xl font-black text-brand-blue">9 PM Onwards</div>
-              </div>
-            </div>
-
-            <DroneReminderButton />
-
-            <p className="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">
-              Only at <span className="font-herb normal-case tracking-normal text-xs">Daawat-e-Ramzaan</span>
-            </p>
-          </div>
-
-          {/* Shooting star decoration */}
-          <div className="absolute top-1/4 right-0 w-24 h-px bg-gradient-to-l from-brand-gold to-transparent opacity-30 -rotate-12" />
-          <div className="absolute top-1/3 left-4 opacity-10">
-            <Rocket className="w-12 h-12 text-brand-blue" />
-          </div>
-        </section >
+        {/* Drone Show Feature - Dynamic Section */}
+        <DroneShowSection />
 
         {/* Instagram Community Section */}
         < section className="mb-10 relative overflow-hidden rounded-3xl bg-white border border-brand-blue/10 p-8 text-center" >
@@ -356,6 +304,41 @@ export default function Home() {
                 <span className="text-[8px] text-gray-400 font-bold uppercase tracking-wider">Mobility Partner</span>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Instagram Highlights (Previous Seasons) */}
+        <section className="mb-10 relative overflow-hidden rounded-3xl bg-white border border-brand-blue/5 py-8 px-4 sm:p-8">
+          <h3 className="text-center text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-8">Previous Seasons</h3>
+          <div className="flex md:justify-center gap-5 sm:gap-6 overflow-x-auto pb-4 snap-x px-2 pt-1 no-scrollbar">
+            {[
+              { label: 'Season 1', img: '/images/seasons/der1.jpg', url: 'https://www.instagram.com/stories/highlights/18061041643929781/' },
+              { label: 'Season 2', img: '/images/seasons/der2.jpg', url: 'https://www.instagram.com/stories/highlights/18482117515055713/' },
+              { label: 'Season 3', img: '/images/seasons/der3.jpg', url: 'https://www.instagram.com/stories/highlights/18080637667533097/' },
+              { label: 'Season 4', img: '/images/seasons/der4.jpg', url: 'https://www.instagram.com/stories/highlights/17894334552149258/' }
+            ].map((season, i) => (
+              <a
+                key={i}
+                href={season.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 group snap-center"
+              >
+                {/* Instagram story ring effect */}
+                <div className="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] group-hover:scale-105 transition-transform shadow-sm">
+                  <div className="w-full h-full rounded-full border-[3px] border-white overflow-hidden bg-white">
+                    <img
+                      src={season.img}
+                      alt={season.label}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider group-hover:text-brand-blue transition-colors">
+                  {season.label}
+                </span>
+              </a>
+            ))}
           </div>
         </section>
 
