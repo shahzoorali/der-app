@@ -1,0 +1,192 @@
+.container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #fafafa;
+  color: #111;
+  min-height: 100vh;
+  padding: 20px 0;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.instructionCarousel {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.carouselTrack {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carouselTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.carouselSlide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.slideContent {
+  background: #fff;
+  border: 2px solid #111;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  height: 100%;
+}
+
+.slideContent h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.slideContent p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.slideContent img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.swipeHint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.roomSection {
+  background: #fff;
+  border: 2px solid #111;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  margin: 40px auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.roomTitle {
+  margin-top: 0;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.comingSoon {
+  font-size: 1rem;
+  color: #555;
+}
+
+.examplesSection {
+  margin-top: 30px;
+  background: #fff;
+  border: 2px solid #111;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.examplesTitle {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.thumbnailGallery {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: calc(50% - 15px);
+  max-width: 200px;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  object-fit: cover;
+}
+
+.thumbnail:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enlargedImage {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+}
+
+.closeButton {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  color: #ccc;
+}
