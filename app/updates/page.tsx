@@ -4,6 +4,58 @@ import { useState, useEffect } from "react";
 import { Navbar, BottomNav, PageContainer } from "@/components/layout-components";
 import { Bell, Info, Star, Users, MapPin, Clock } from "lucide-react";
 
+const DescriptionRenderer = ({ text }: { text: string }) => {
+    // Regex to find URLs
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+
+    return (
+        <div className="text-sm text-gray-500 leading-relaxed mb-4 font-medium flex flex-col gap-3">
+            <p>
+                {parts.map((part, i) => {
+                    if (part.match(urlRegex)) {
+                        return (
+                            <a
+                                key={i}
+                                href={part}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-brand-blue underline break-all"
+                            >
+                                {part}
+                            </a>
+                        );
+                    }
+                    return <span key={i}>{part}</span>;
+                })}
+            </p>
+            {/* Find all Instagram links and render iframes for them */}
+            {parts
+                .filter((part) => part.match(urlRegex) && part.includes('instagram.com'))
+                .map((igUrl, i) => {
+                    // Normalize IG URL to get embed link
+                    let embedUrl = igUrl.split('?')[0]; // remove query params
+                    if (!embedUrl.endsWith('/')) embedUrl += '/';
+                    embedUrl += 'embed';
+
+                    return (
+                        <div key={`ig-${i}`} className="w-full overflow-hidden rounded-xl border border-gray-200 mt-2">
+                            <iframe
+                                src={embedUrl}
+                                className="w-full"
+                                height="400"
+                                frameBorder="0"
+                                scrolling="no"
+                                allowTransparency={true}
+                                allow="encrypted-media"
+                            />
+                        </div>
+                    );
+                })}
+        </div>
+    );
+};
+
 export default function Updates() {
     const [announcements, setAnnouncements] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -82,9 +134,7 @@ export default function Updates() {
                                     {item.title}
                                 </h3>
 
-                                <p className="text-sm text-gray-500 leading-relaxed mb-4 font-medium">
-                                    {item.description}
-                                </p>
+                                <DescriptionRenderer text={item.description} />
 
                                 <div className="flex items-center gap-1.5 text-brand-blue/50">
                                     <MapPin className="w-3.5 h-3.5" />
