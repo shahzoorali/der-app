@@ -70,12 +70,34 @@ export default function ImmersePage() {
                     <div className={styles.roomSection}>
                         <h2 className={styles.roomTitle}>Room 2: Bade Miyan, Chote Miyan</h2>
                         <p className={styles.comingSoon}>Guide coming soon...</p>
+                        <div className={styles.examplesSection}>
+                            <h3 className={styles.examplesTitle}>Sample Gallery</h3>
+                            <div className={styles.thumbnailGallery}>
+                                <img
+                                    src="/immerse/bade1.jpg"
+                                    alt="Bade Miyan, Chote Miyan Example"
+                                    className={styles.thumbnail}
+                                    onClick={() => setSelectedImage("/immerse/bade1.jpg")}
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     {/* Room 3: Khaas Daawat */}
                     <div className={styles.roomSection}>
                         <h2 className={styles.roomTitle}>Room 3: Khaas Daawat</h2>
                         <p className={styles.comingSoon}>Guide coming soon...</p>
+                        <div className={styles.examplesSection}>
+                            <h3 className={styles.examplesTitle}>Sample Gallery</h3>
+                            <div className={styles.thumbnailGallery}>
+                                <img
+                                    src="/immerse/khaas1.jpg"
+                                    alt="Khaas Daawat Example"
+                                    className={styles.thumbnail}
+                                    onClick={() => setSelectedImage("/immerse/khaas1.jpg")}
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     {selectedImage && (
