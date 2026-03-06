@@ -133,7 +133,7 @@ export function DroneShowSection() {
                                 The Sky Was <br /> <span className="text-brand-gold">Aligned</span>
                             </h3>
                             <p className="text-white/60 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">
-                                Relive the 500-drone spectacle
+                                Relive the 100-drone spectacle
                             </p>
 
                             <a
@@ -149,12 +149,12 @@ export function DroneShowSection() {
 
                             <div className="mt-8 flex justify-center gap-4 text-white/40">
                                 <div className="flex flex-col items-center">
-                                    <span className="text-lg font-black text-white">500+</span>
+                                    <span className="text-lg font-black text-white">100+</span>
                                     <span className="text-[8px] uppercase font-bold tracking-tighter text-brand-gold/60">Drones</span>
                                 </div>
                                 <div className="w-px h-8 bg-white/10" />
                                 <div className="flex flex-col items-center">
-                                    <span className="text-lg font-black text-white">15K</span>
+                                    <span className="text-lg font-black text-white">4K+</span>
                                     <span className="text-[8px] uppercase font-bold tracking-tighter text-brand-gold/60">Attendees</span>
                                 </div>
                                 <div className="w-px h-8 bg-white/10" />
