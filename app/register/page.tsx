@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { requestNotificationPermission } from '@/lib/notifications';
 
 type Step = 'NAME' | 'PHONE' | 'OTP' | 'ADULTS' | 'SUCCESS';
 
 export default function RegisterPage() {
+    const router = useRouter();
     const [step, setStep] = useState<Step>('NAME');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState(''); // Just the 10 digits
@@ -15,6 +18,15 @@ export default function RegisterPage() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (step === 'SUCCESS') {
+            const timer = setTimeout(() => {
+                router.push('/immerse');
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [step, router]);
 
     const getShortName = (fullName: string) => {
         return fullName.length > 9 ? fullName.substring(0, 9) + '...' : fullName;
@@ -114,6 +126,8 @@ export default function RegisterPage() {
                 if (typeof window !== 'undefined') {
                     localStorage.setItem('der-user-name', name);
                     localStorage.setItem('der-user-phone', `+91${phone}`);
+                    // Request notification permission
+                    requestNotificationPermission();
                 }
                 setStep('SUCCESS');
             } else {
@@ -128,7 +142,7 @@ export default function RegisterPage() {
 
     const renderLogos = () => (
         <div className="flex flex-col items-center gap-4 mb-8 pt-6">
-            <div className="relative w-40 h-20">
+            <div className="relative w-[480px] h-[240px] max-w-full">
                 <Image
                     src="/ahmed-al-maghribi-logo.png"
                     alt="Ahmed Al Maghribi Logo"
@@ -136,7 +150,7 @@ export default function RegisterPage() {
                     className="object-contain"
                 />
             </div>
-            <div className="relative w-48 h-20">
+            <div className="relative w-[576px] h-[240px] max-w-full">
                 <Image
                     src="/der-logo.svg"
                     alt="Daawat-e-Ramzaan Logo"
