@@ -115,3 +115,7 @@ export async function checkWhatsAppPresence(phoneStr: string): Promise<boolean> 
         }
     });
 }
+
+export function isWhatsAppConnected(): boolean {
+    return isConnected;
+}

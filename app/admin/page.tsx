@@ -7,6 +7,8 @@ export default function AdminPage() {
     const [password, setPassword] = useState("");
     const [announcements, setAnnouncements] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [waStatus, setWaStatus] = useState<boolean | null>(null);
+    const [waLoading, setWaLoading] = useState(false);
 
     // Form state
     const [type, setType] = useState("general");
@@ -34,8 +36,27 @@ export default function AdminPage() {
         if (isAuthenticated) {
             fetchAnnouncements();
             fetchSettings();
+            fetchWAStatus();
+            const interval = setInterval(fetchWAStatus, 15000); // Check every 15s
+            return () => clearInterval(interval);
         }
     }, [isAuthenticated]);
+
+    const fetchWAStatus = async () => {
+        setWaLoading(true);
+        try {
+            const res = await fetch("/api/admin/whatsapp-status", {
+                headers: { "Authorization": `Bearer ${password}` }
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setWaStatus(data.connected);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        setWaLoading(false);
+    };
 
     const fetchAnnouncements = async () => {
         try {
@@ -233,7 +254,16 @@ export default function AdminPage() {
                         <h1 className="text-3xl font-bold text-gray-900">Announcements Admin</h1>
                         <p className="mt-2 text-sm text-gray-700">Add or remove broadcasts.</p>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-center">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm">
+                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">WhatsApp:</span>
+                            <div className="flex items-center gap-1.5">
+                                <div className={`w-2.5 h-2.5 rounded-full ${waStatus === true ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : waStatus === false ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' : 'bg-gray-300'}`}></div>
+                                <span className={`text-sm font-medium ${waStatus === true ? 'text-green-700' : waStatus === false ? 'text-red-700' : 'text-gray-500'}`}>
+                                    {waStatus === true ? 'Connected' : waStatus === false ? 'Disconnected' : 'Checking...'}
+                                </span>
+                            </div>
+                        </div>
                         <a href="/admin/registrations" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
                             View Registrations
                         </a>
