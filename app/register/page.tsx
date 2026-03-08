@@ -48,7 +48,13 @@ export default function RegisterPage() {
             const data = await res.json();
 
             if (res.ok) {
-                setStep('OTP');
+                if (data.whatsappVerified) {
+                    setOtp('WHATSAPP_VERIFIED');
+                    setStep('ADULTS');
+                    // Optional: show a small success notification
+                } else {
+                    setStep('OTP');
+                }
             } else {
                 setError(data.error || 'Failed to send OTP');
             }

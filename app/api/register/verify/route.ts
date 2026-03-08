@@ -58,6 +58,9 @@ export async function POST(request: Request) {
         const eventDay = diffDays + 1; // E.g., Day 1, Day 2
         const safeEventDay = (eventDay >= 1 && eventDay <= 14) ? eventDay : 0; // 0 for out-of-bounds tests
 
+        // Determine if this was verified via WhatsApp or SMS
+        const whatsappExists = otpRecord.otp === 'WHATSAPP_VERIFIED';
+
         // 2. OTP is valid, register the user in the multi-day table
         await docClient.send(new PutCommand({
             TableName: 'DerDailyRegistrations',
@@ -66,6 +69,8 @@ export async function POST(request: Request) {
                 eventDay: safeEventDay,
                 name,
                 adults,
+                whatsapp_exists: whatsappExists,
+                verified: true,
                 registeredAt: dt.toISOString()
             }
         }));

@@ -73,7 +73,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${outfit.variable} ${playball.variable} antialiased selection:bg-brand-gold selection:text-brand-blue`}>
+      <body suppressHydrationWarning className={`${outfit.variable} ${playball.variable} antialiased selection:bg-brand-gold selection:text-brand-blue`}>
         <AppShell>{children}</AppShell>
       </body>
     </html>
