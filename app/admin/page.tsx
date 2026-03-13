@@ -27,6 +27,7 @@ export default function AdminPage() {
 
     // Settings state
     const [droneShowHighlightsUrl, setDroneShowHighlightsUrl] = useState("");
+    const [aasmaanHighlightsUrl, setAasmaanHighlightsUrl] = useState("");
     const [settingsLoading, setSettingsLoading] = useState(false);
     const [settingsResult, setSettingsResult] = useState<string | null>(null);
 
@@ -74,6 +75,9 @@ export default function AdminPage() {
             const data = await res.json();
             if (data.droneShowHighlightsUrl !== undefined) {
                 setDroneShowHighlightsUrl(data.droneShowHighlightsUrl);
+            }
+            if (data.aasmaanHighlightsUrl !== undefined) {
+                setAasmaanHighlightsUrl(data.aasmaanHighlightsUrl);
             }
         } catch (e) {
             console.error(e);
@@ -192,7 +196,7 @@ export default function AdminPage() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${password}`
                 },
-                body: JSON.stringify({ droneShowHighlightsUrl }),
+                body: JSON.stringify({ droneShowHighlightsUrl, aasmaanHighlightsUrl }),
             });
             if (res.ok) {
                 setSettingsResult('✅ Settings updated successfully');
@@ -380,6 +384,11 @@ export default function AdminPage() {
                             <label className="block text-sm font-medium text-gray-700">Drone Show Highlights URL (Instagram Reel)</label>
                             <input type="text" value={droneShowHighlightsUrl} onChange={e => setDroneShowHighlightsUrl(e.target.value)} placeholder="https://www.instagram.com/reel/..." className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                             <p className="mt-1 text-xs text-gray-500">Leaving this blank will link to the main Daawat-e-Ramzaan Instagram profile.</p>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Daawat-e-Aasmaan Highlights URL (Instagram Reel)</label>
+                            <input type="text" value={aasmaanHighlightsUrl} onChange={e => setAasmaanHighlightsUrl(e.target.value)} placeholder="https://www.instagram.com/reel/..." className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                            <p className="mt-1 text-xs text-gray-500">Instagram link for the Daawat-e-Aasmaan drone show highlights. Shows after the event ends.</p>
                         </div>
                         <button type="submit" disabled={settingsLoading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
                             {settingsLoading ? "Saving..." : "Save Settings"}

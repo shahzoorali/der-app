@@ -1,5 +1,6 @@
 import { Navbar, BottomNav, PageContainer } from "@/components/layout-components";
 import { DroneShowSection } from "@/components/drone-show-section";
+import { DaawatAasmaanSection } from "@/components/daawat-aasmaan-section";
 import { DayCounter } from "@/components/day-counter";
 import { EventCard } from "@/components/feature-cards";
 import { CharminarIcon, IslamicBorder, TileMosaicStrip, CrescentMoon } from "@/components/brand-elements";
@@ -236,6 +237,9 @@ export default function Home() {
 
         {/* Drone Show Feature - Dynamic Section */}
         <DroneShowSection />
+
+        {/* Daawat-e-Aasmaan - New Drone Show Tonight */}
+        <DaawatAasmaanSection />
 
         {/* Instagram Community Section */}
         < section className="mb-10 relative overflow-hidden rounded-3xl bg-white border border-brand-blue/10 p-8 text-center" >
