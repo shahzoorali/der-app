@@ -85,8 +85,12 @@ self.addEventListener('push', (event) => {
         }
     }
 
+    let bodyText = data.body || '';
+    // Replace newlines with a bullet point to improve display on OSes that strip newlines
+    bodyText = bodyText.trim().replace(/\r?\n+/g, ' • ');
+
     const options = {
-        body: data.body,
+        body: bodyText,
         icon: '/der-pwa-icon.png',
         badge: '/der-pwa-icon.png',
         vibrate: [200, 100, 200],

@@ -11,7 +11,7 @@ const DescriptionRenderer = ({ text }: { text: string }) => {
 
     return (
         <div className="text-sm text-gray-500 leading-relaxed mb-4 font-medium flex flex-col gap-3">
-            <p>
+            <p className="whitespace-pre-wrap">
                 {parts.map((part, i) => {
                     if (part.match(urlRegex)) {
                         return (
