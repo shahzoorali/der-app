@@ -6,6 +6,7 @@ import { EventCard } from "@/components/feature-cards";
 import { CharminarIcon, IslamicBorder, TileMosaicStrip, CrescentMoon } from "@/components/brand-elements";
 import { InstagramEmbed } from "@/components/instagram-embed";
 import { TimetableCard } from "@/components/timetable-card";
+import { LaylatulQadrDuas } from "@/components/laylatul-qadr-duas";
 import vendors from "@/data/vendors.json";
 import events from "@/data/events.json";
 import { Map, Calendar, ShoppingBag, Gem, Sofa, Footprints, Baby, Sparkles, Heart, Users, LayoutGrid, Car, ArrowLeftRight, Percent, MapPin, Instagram, Utensils, Navigation } from "lucide-react";
@@ -210,6 +211,9 @@ export default function Home() {
 
         {/* Ramadan Timetable Widget */}
         <TimetableCard />
+
+        {/* Laylatul Qadr Duas Carousel */}
+        <LaylatulQadrDuas />
 
         {/* Categories / Explore */}
         < section className="mb-10" >
