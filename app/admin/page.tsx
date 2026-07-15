@@ -259,20 +259,23 @@ export default function AdminPage() {
                         <p className="mt-2 text-sm text-gray-700">Add or remove broadcasts.</p>
                     </div>
                     <div className="flex gap-4 items-center">
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm">
+                        <a href="/admin/whatsapp-qr" className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50">
                             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">WhatsApp:</span>
                             <div className="flex items-center gap-1.5">
                                 <div className={`w-2.5 h-2.5 rounded-full ${waStatus === true ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : waStatus === false ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' : 'bg-gray-300'}`}></div>
                                 <span className={`text-sm font-medium ${waStatus === true ? 'text-green-700' : waStatus === false ? 'text-red-700' : 'text-gray-500'}`}>
-                                    {waStatus === true ? 'Connected' : waStatus === false ? 'Disconnected' : 'Checking...'}
+                                    {waStatus === true ? 'Connected' : waStatus === false ? 'Disconnected — click to scan QR' : 'Checking...'}
                                 </span>
                             </div>
-                        </div>
+                        </a>
                         <a href="/admin/registrations" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
                             View Registrations
                         </a>
                         <a href="/admin/subscribers" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             View Subscribers
+                        </a>
+                        <a href="/admin/vendors" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                            View Vendors
                         </a>
                     </div>
                 </div>

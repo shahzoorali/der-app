@@ -14,6 +14,7 @@ export default function RegisterPage() {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState(''); // Just the 10 digits
     const [otp, setOtp] = useState('');
+    const [viaWhatsApp, setViaWhatsApp] = useState(false);
     const [adults, setAdults] = useState<number>(1);
 
     const [loading, setLoading] = useState(false);
@@ -60,13 +61,8 @@ export default function RegisterPage() {
             const data = await res.json();
 
             if (res.ok) {
-                if (data.whatsappVerified) {
-                    setOtp('WHATSAPP_VERIFIED');
-                    setStep('ADULTS');
-                    // Optional: show a small success notification
-                } else {
-                    setStep('OTP');
-                }
+                setViaWhatsApp(!!data.viaWhatsApp);
+                setStep('OTP');
             } else {
                 setError(data.error || 'Failed to send OTP');
             }
@@ -228,7 +224,7 @@ export default function RegisterPage() {
                             Enter OTP
                         </label>
                         <p className="text-center text-stone-400 -mt-4 text-sm">
-                            Sent to +91 {phone}
+                            Sent to +91 {phone} {viaWhatsApp ? 'via WhatsApp' : 'via SMS'}
                         </p>
                         <input
                             type="text"

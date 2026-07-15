@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 wa-auth/
+
+# local dev-only tooling and fake-DynamoDB store
+/.claude/
+/.dev-data/

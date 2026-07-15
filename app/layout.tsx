@@ -18,8 +18,8 @@ const playball = Playball({
 
 
 export const metadata: Metadata = {
-  title: "Daawat E Ramzaan | India's Biggest Ramzaan Experience",
-  description: "Shop. Indulge. Immerse. Experience the magic of Ramzaan at Hyderabad's grandest cultural festival.",
+  title: "Daawat-e-Ramzaan 2027 | Season 6 — Coming to Multiple Cities",
+  description: "Daawat-e-Ramzaan Season 6 is going multicity in 2027. Vendor registrations are now open — India's Biggest Ramzaan Experience returns bigger than ever.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

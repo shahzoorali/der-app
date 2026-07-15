@@ -10,6 +10,24 @@ const logger = pino({ level: 'silent' }) as any;
 let sock: ReturnType<typeof makeWASocket> | null = null;
 let isConnecting = false;
 let isConnected = false;
+let latestQr: string | null = null;
+let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+
+// Delay before attempting to reconnect after a drop. A short backoff lets the
+// previous socket fully close on WhatsApp's side before we open a new one —
+// reconnecting instantly (especially after a "conflict") just triggers another
+// conflict and spins a tight loop.
+const RECONNECT_DELAY_MS = 3000;
+
+function scheduleReconnect() {
+    // Only ever have one reconnect pending, and never while already
+    // connecting/connected — this is what prevents overlapping sockets.
+    if (reconnectTimer || isConnecting || isConnected) return;
+    reconnectTimer = setTimeout(() => {
+        reconnectTimer = null;
+        initWhatsApp();
+    }, RECONNECT_DELAY_MS);
+}
 
 // We'll queue requests to avoid hitting rate limits too hard
 const checkQueue: { phone: string; resolve: (val: boolean) => void; reject: (err: any) => void }[] = [];
@@ -45,7 +63,13 @@ async function processQueue() {
 }
 
 export async function initWhatsApp() {
-    if (sock || isConnecting) return;
+    // Guard: never open a second socket while one is live or being opened, and
+    // cancel any pending reconnect since we're connecting right now.
+    if (sock || isConnecting || isConnected) return;
+    if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+    }
     isConnecting = true;
 
     try {
@@ -53,7 +77,7 @@ export async function initWhatsApp() {
         const { state, saveCreds } = await useMultiFileAuthState(authFolder);
         const { version } = await fetchLatestBaileysVersion();
 
-        sock = makeWASocket({
+        const thisSock = makeWASocket({
             version,
             logger,
             printQRInTerminal: true,
@@ -61,34 +85,45 @@ export async function initWhatsApp() {
             // You can configure browser name if desired
             browser: ['Daawat-e-Ramzaan', 'Chrome', '1.0.0'],
         });
+        sock = thisSock;
 
-        sock.ev.on('creds.update', saveCreds);
+        thisSock.ev.on('creds.update', saveCreds);
 
-        sock.ev.on('connection.update', (update) => {
+        thisSock.ev.on('connection.update', (update) => {
             const { connection, lastDisconnect, qr } = update;
 
+            // Ignore late events from a socket we've already replaced.
+            if (sock !== thisSock && connection !== 'close') return;
+
             if (qr) {
+                latestQr = qr;
                 console.log('--- SCAN QR CODE BELOW ---');
                 qrcode.generate(qr, { small: true });
             }
 
             if (connection === 'close') {
-                isConnected = false;
-                const shouldReconnect = (lastDisconnect?.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
-                console.log('WhatsApp connection closed due to ', lastDisconnect?.error, ', reconnecting ', shouldReconnect);
+                const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
+                const loggedOut = statusCode === DisconnectReason.loggedOut;
 
-                sock = null;
-                isConnecting = false;
+                // Only react to a close for the socket we currently hold, so a
+                // stale socket's close can't clobber a newer connection.
+                if (sock === thisSock) {
+                    isConnected = false;
+                    sock = null;
+                    isConnecting = false;
 
-                if (shouldReconnect) {
-                    initWhatsApp();
-                } else {
-                    console.log('WhatsApp logged out. Please delete the wa-auth folder and restart to scan QR code again.');
+                    if (loggedOut) {
+                        console.log('WhatsApp logged out. Please delete the wa-auth folder and restart to scan QR code again.');
+                    } else {
+                        console.log('WhatsApp connection closed, scheduling reconnect. Reason:', lastDisconnect?.error?.message);
+                        scheduleReconnect();
+                    }
                 }
             } else if (connection === 'open') {
                 console.log('WhatsApp connected successfully!');
                 isConnecting = false;
                 isConnected = true;
+                latestQr = null;
                 processQueue(); // Start processing any pending checks
             }
         });
@@ -96,6 +131,7 @@ export async function initWhatsApp() {
         console.error('Failed to initialize WhatsApp:', error);
         sock = null;
         isConnecting = false;
+        scheduleReconnect();
     }
 }
 
@@ -118,4 +154,36 @@ export async function checkWhatsAppPresence(phoneStr: string): Promise<boolean> 
 
 export function isWhatsAppConnected(): boolean {
     return isConnected;
+}
+
+export function getLatestQr(): string | null {
+    return latestQr;
+}
+
+export async function sendWhatsAppMessage(phoneStr: string, text: string): Promise<boolean> {
+    if (!sock) {
+        await initWhatsApp();
+    }
+
+    // Wait briefly for the connection to come up if we just triggered init
+    const deadline = Date.now() + 10_000;
+    while (!isConnected && Date.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, 250));
+    }
+
+    if (!sock || !isConnected) {
+        console.error('Cannot send WhatsApp message: not connected');
+        return false;
+    }
+
+    const cleanPhone = phoneStr.replace(/\D/g, '');
+    const jid = `${cleanPhone}@s.whatsapp.net`;
+
+    try {
+        await sock.sendMessage(jid, { text });
+        return true;
+    } catch (err) {
+        console.error('Error sending WhatsApp message:', err);
+        return false;
+    }
 }

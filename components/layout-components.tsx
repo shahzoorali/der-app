@@ -2,17 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Map, ShoppingBag, Ticket, Bell, Camera } from "lucide-react";
+import { Map, ShoppingBag, Ticket, Bell, Camera, Store } from "lucide-react";
 import { CharminarIcon } from "./brand-elements";
 import { PWAInstallButton } from "./pwa-install";
 import { motion } from "framer-motion";
 
 const navItems = [
-    { icon: ShoppingBag, label: "Shop", href: "/bazaar" },
-    { icon: CharminarIcon, label: "Indulge", href: "/" },
-    // { icon: Map, label: "Map", href: "/map" },
+    { icon: CharminarIcon, label: "Home", href: "/" },
+    { icon: Store, label: "Vendors", href: "/vendor/register" },
     { icon: Camera, label: "Immerse", href: "/immerse" },
-    // { icon: Ticket, label: "Tickets", href: "/tickets" },
     { icon: Bell, label: "Updates", href: "/updates" },
 ];
 

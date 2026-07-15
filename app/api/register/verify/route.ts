@@ -1,17 +1,7 @@
 import { NextResponse } from 'next/server';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, GetCommand, PutCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
-
-const credentials = process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-} : undefined;
-
-const ddbClient = new DynamoDBClient({
-    region: process.env.AWS_REGION || 'ap-south-1', // Assuming tables are in main region
-    credentials
-});
-const docClient = DynamoDBDocumentClient.from(ddbClient);
+import { PutCommand } from '@aws-sdk/lib-dynamodb';
+import { docClient, TABLES } from '@/lib/dynamo';
+import { validateOtp, clearOtp } from '@/lib/otp';
 
 export async function POST(request: Request) {
     try {
@@ -22,28 +12,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        // 1. Fetch the OTP from DynamoDB
-        const getOtpResponse = await docClient.send(new GetCommand({
-            TableName: 'DerOTPs',
-            Key: { phone }
-        }));
-
-        const otpRecord = getOtpResponse.Item;
-
-        if (!otpRecord) {
-            return NextResponse.json({ error: 'OTP not found. Please request a new one.' }, { status: 400 });
+        const result = await validateOtp(phone, otp);
+        if (!result.ok) {
+            return NextResponse.json({ error: result.error }, { status: 400 });
         }
-
-        const now = Math.floor(Date.now() / 1000);
-        if (now > otpRecord.expiresAt) {
-            // Optional: delete expired OTP immediately
-            await docClient.send(new DeleteCommand({ TableName: 'DerOTPs', Key: { phone } }));
-            return NextResponse.json({ error: 'OTP has expired. Please request a new one.' }, { status: 400 });
-        }
-
-        if (otpRecord.otp !== otp) {
-            return NextResponse.json({ error: 'Invalid OTP.' }, { status: 400 });
-        }
+        const whatsappExists = result.channel === 'whatsapp';
 
         // Calculate Event Day (1-14) based on 6PM to 3AM operational shift
         const dt = new Date();
@@ -58,12 +31,9 @@ export async function POST(request: Request) {
         const eventDay = diffDays + 1; // E.g., Day 1, Day 2
         const safeEventDay = (eventDay >= 1 && eventDay <= 14) ? eventDay : 0; // 0 for out-of-bounds tests
 
-        // Determine if this was verified via WhatsApp or SMS
-        const whatsappExists = otpRecord.otp === 'WHATSAPP_VERIFIED';
-
-        // 2. OTP is valid, register the user in the multi-day table
+        // OTP is valid, register the user in the multi-day table
         await docClient.send(new PutCommand({
-            TableName: 'DerDailyRegistrations',
+            TableName: TABLES.DAILY_REGISTRATIONS,
             Item: {
                 phone,
                 eventDay: safeEventDay,
@@ -75,11 +45,8 @@ export async function POST(request: Request) {
             }
         }));
 
-        // 3. Clear the OTP so it can't be reused
-        await docClient.send(new DeleteCommand({
-            TableName: 'DerOTPs',
-            Key: { phone }
-        }));
+        // Clear the OTP so it can't be reused
+        await clearOtp(phone);
 
         return NextResponse.json({ success: true, message: 'Registration successful' });
     } catch (error: any) {
