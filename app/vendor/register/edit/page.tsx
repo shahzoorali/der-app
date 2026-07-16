@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PageContainer, Navbar } from '@/components/layout-components';
 import { IslamicBorder, CharminarIcon } from '@/components/brand-elements';
-
-const CATEGORIES = ['Fashion', 'Jewelry', 'Food', 'Home Decor', 'Footwear', 'Kids', 'Lifestyle'];
-const CITY_OPTIONS = ['Hyderabad', 'Bengaluru', 'Mumbai', 'Delhi NCR', 'Chennai', 'Any'];
+import { CATEGORIES, CITY_OPTIONS } from '@/lib/vendor-constants';
 
 export default function VendorEditApplicationPage() {
     const router = useRouter();

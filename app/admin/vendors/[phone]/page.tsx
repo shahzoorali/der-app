@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { StatusBadge } from "@/components/vendor/status-badge";
+import { CATEGORIES, CITY_OPTIONS } from "@/lib/vendor-constants";
 
 const STATUSES = ["SUBMITTED", "APPROVED", "WAITLISTED", "REJECTED", "INFO_REQUIRED", "PAID"];
 
@@ -27,6 +28,18 @@ export default function VendorDetailAdminPage() {
     const [stallNotes, setStallNotes] = useState("");
 
     const [amount, setAmount] = useState("");
+
+    // Editable submitted details
+    const [businessName, setBusinessName] = useState("");
+    const [contactPerson, setContactPerson] = useState("");
+    const [email, setEmail] = useState("");
+    const [productCategory, setProductCategory] = useState("");
+    const [cityPreferences, setCityPreferences] = useState<string[]>([]);
+    const [brandDescription, setBrandDescription] = useState("");
+
+    // Editable documents
+    const [images, setImages] = useState<any[]>([]);
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated) fetchVendor();
@@ -63,6 +76,13 @@ export default function VendorDetailAdminPage() {
                 setVendor(data);
                 setStatus(data.status);
                 setNote(data.statusNote || "");
+                setBusinessName(data.businessName || "");
+                setContactPerson(data.contactPerson || "");
+                setEmail(data.email || "");
+                setProductCategory(data.productCategory || "");
+                setCityPreferences(data.cityPreferences || []);
+                setBrandDescription(data.brandDescription || "");
+                setImages(data.images || []);
                 if (data.stall) {
                     setCity(data.stall.city);
                     setStallNumber(data.stall.stallNumber);
@@ -94,6 +114,52 @@ export default function VendorDetailAdminPage() {
         } catch (e) {
             setActionResult("Network error.");
         }
+    };
+
+    const toggleCity = (c: string) => {
+        setCityPreferences((prev) => {
+            if (c === "Any") return prev.includes("Any") ? [] : ["Any"];
+            const withoutAny = prev.filter((x) => x !== "Any");
+            return withoutAny.includes(c) ? withoutAny.filter((x) => x !== c) : [...withoutAny, c];
+        });
+    };
+
+    const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+        if (!file) return;
+        setUploading(true);
+        setActionResult("");
+        try {
+            const res = await fetch(`/api/admin/vendors/${encodeURIComponent(phone)}/upload-url`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${password}` },
+                body: JSON.stringify({ fileName: file.name, contentType: file.type }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setActionResult(data.error || "Upload failed.");
+                setUploading(false);
+                return;
+            }
+            const put = await fetch(data.uploadUrl, { method: "PUT", headers: { "Content-Type": file.type }, body: file });
+            if (!put.ok) {
+                setActionResult("Upload to storage failed.");
+                setUploading(false);
+                return;
+            }
+            const nextImages = [...images, { key: data.key, name: file.name }];
+            await runAction({ action: "updateImages", images: nextImages });
+        } catch (err) {
+            setActionResult("Network error during upload.");
+        }
+        setUploading(false);
+    };
+
+    const handleRemoveImage = async (idx: number) => {
+        if (!confirm("Remove this document?")) return;
+        const nextImages = images.filter((_, i) => i !== idx);
+        await runAction({ action: "updateImages", images: nextImages });
     };
 
     if (!isAuthenticated) {
@@ -146,26 +212,85 @@ export default function VendorDetailAdminPage() {
                     <div className="bg-white rounded-md shadow p-3 text-sm text-gray-700">{actionResult}</div>
                 )}
 
-                <div className="bg-white shadow rounded-lg p-6 grid grid-cols-2 gap-4 text-sm">
-                    <Info label="Contact Person" value={vendor.contactPerson} />
-                    <Info label="Email" value={vendor.email || '-'} />
-                    <Info label="Category" value={vendor.productCategory} />
-                    <Info label="City Preferences" value={(vendor.cityPreferences || []).join(", ")} />
-                    <Info label="Brand Description" value={vendor.brandDescription || '-'} full />
-                </div>
-
-                {vendor.images?.length > 0 && (
-                    <div className="bg-white shadow rounded-lg p-6">
-                        <h3 className="text-sm font-bold text-gray-700 mb-3">Documents</h3>
-                        <div className="grid grid-cols-4 gap-3">
-                            {vendor.images.map((img: any, i: number) => (
-                                <a key={i} href={img.url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-lg overflow-hidden bg-gray-100 block">
-                                    <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
-                                </a>
-                            ))}
+                <div className="bg-white shadow rounded-lg p-6">
+                    <h3 className="text-sm font-bold text-gray-700 mb-3">Submitted Details</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <Field label="Business Name" value={businessName} onChange={setBusinessName} />
+                        <Field label="Contact Person" value={contactPerson} onChange={setContactPerson} />
+                        <Field label="Email" value={email} onChange={setEmail} />
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Category</label>
+                            <select value={productCategory} onChange={(e) => setProductCategory(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="">Select a category</option>
+                                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <div className="md:col-span-2">
+                            <label className="block text-xs font-medium text-gray-400 uppercase">City Preferences</label>
+                            <div className="mt-1 flex flex-wrap gap-2">
+                                {CITY_OPTIONS.map((c) => (
+                                    <button
+                                        key={c}
+                                        type="button"
+                                        onClick={() => toggleCity(c)}
+                                        className={`px-3 py-1.5 rounded-md text-sm border ${cityPreferences.includes(c) ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-600 border-gray-300'}`}
+                                    >
+                                        {c}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="md:col-span-2">
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Brand Description</label>
+                            <textarea value={brandDescription} onChange={(e) => setBrandDescription(e.target.value)} rows={3} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3" />
                         </div>
                     </div>
-                )}
+                    <button
+                        onClick={() => runAction({
+                            action: 'editDetails',
+                            businessName,
+                            contactPerson,
+                            email,
+                            productCategory,
+                            brandDescription,
+                            cityPreferences,
+                        })}
+                        className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700"
+                    >
+                        Save Details
+                    </button>
+                </div>
+
+                {/* Documents */}
+                <div className="bg-white shadow rounded-lg p-6">
+                    <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-bold text-gray-700">Documents</h3>
+                        <label className={`px-3 py-1.5 rounded-md text-sm font-medium cursor-pointer ${uploading ? 'bg-gray-300 text-gray-500' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>
+                            {uploading ? 'Uploading…' : '+ Add Document'}
+                            <input type="file" accept="image/jpeg,image/png,image/webp,application/pdf" className="hidden" disabled={uploading} onChange={handleAddImage} />
+                        </label>
+                    </div>
+                    {vendor.images?.length > 0 ? (
+                        <div className="grid grid-cols-4 gap-3">
+                            {vendor.images.map((img: any, i: number) => (
+                                <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group">
+                                    <a href={img.url} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+                                        <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
+                                    </a>
+                                    <button
+                                        onClick={() => handleRemoveImage(i)}
+                                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-90 hover:opacity-100"
+                                        title="Remove document"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-sm text-gray-500">No documents uploaded.</p>
+                    )}
+                </div>
 
                 {/* Status update */}
                 <div className="bg-white shadow rounded-lg p-6">
@@ -238,11 +363,11 @@ export default function VendorDetailAdminPage() {
     );
 }
 
-function Info({ label, value, full }: { label: string; value: string; full?: boolean }) {
+function Field({ label, value, onChange, full }: { label: string; value: string; onChange: (v: string) => void; full?: boolean }) {
     return (
-        <div className={full ? "col-span-2" : ""}>
-            <p className="text-xs font-medium text-gray-400 uppercase">{label}</p>
-            <p className="text-gray-900 mt-1">{value}</p>
+        <div className={full ? "md:col-span-2" : ""}>
+            <label className="block text-xs font-medium text-gray-400 uppercase">{label}</label>
+            <input value={value} onChange={(e) => onChange(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3" />
         </div>
     );
 }

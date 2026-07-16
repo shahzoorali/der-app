@@ -6,11 +6,9 @@ import Link from 'next/link';
 import { PageContainer, Navbar } from '@/components/layout-components';
 import { IslamicBorder, CharminarIcon } from '@/components/brand-elements';
 import { VendorOtpStep } from '@/components/vendor/otp-step';
+import { CATEGORIES, CITY_OPTIONS } from '@/lib/vendor-constants';
 
 type Step = 'PHONE' | 'OTP' | 'DETAILS' | 'CITIES' | 'IMAGES' | 'REVIEW' | 'SUCCESS';
-
-const CATEGORIES = ['Fashion', 'Jewelry', 'Food', 'Home Decor', 'Footwear', 'Kids', 'Lifestyle'];
-const CITY_OPTIONS = ['Hyderabad', 'Bengaluru', 'Mumbai', 'Delhi NCR', 'Chennai', 'Any'];
 
 type UploadedImage = { key: string; name: string; previewUrl: string };
 

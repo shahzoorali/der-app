@@ -69,6 +69,58 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ ph
             return NextResponse.json({ success: true });
         }
 
+        if (action === 'editDetails') {
+            const { businessName, contactPerson, email, brandDescription, productCategory, cityPreferences } = body;
+            if (!businessName || !contactPerson || !productCategory || !Array.isArray(cityPreferences) || cityPreferences.length === 0) {
+                return NextResponse.json({ error: 'Business name, contact person, category and at least one city are required' }, { status: 400 });
+            }
+
+            const history = existing.Item.statusHistory || [];
+            history.push({ status: existing.Item.status, note: 'Details edited by admin', at: now });
+
+            await docClient.send(new UpdateCommand({
+                TableName: TABLES.VENDORS,
+                Key: { phone: decodedPhone },
+                UpdateExpression: 'SET businessName = :bn, contactPerson = :cp, email = :em, brandDescription = :bd, productCategory = :pc, cityPreferences = :cpr, statusHistory = :hist, updatedAt = :now',
+                ExpressionAttributeValues: {
+                    ':bn': businessName,
+                    ':cp': contactPerson,
+                    ':em': email || null,
+                    ':bd': brandDescription || '',
+                    ':pc': productCategory,
+                    ':cpr': cityPreferences,
+                    ':hist': history,
+                    ':now': now,
+                },
+            }));
+
+            return NextResponse.json({ success: true });
+        }
+
+        if (action === 'updateImages') {
+            const { images } = body;
+            if (!Array.isArray(images)) {
+                return NextResponse.json({ error: 'Images must be an array' }, { status: 400 });
+            }
+            const normalized = images.map((img: any) => ({
+                key: img.key,
+                name: img.name,
+                uploadedAt: img.uploadedAt || now,
+            }));
+
+            const history = existing.Item.statusHistory || [];
+            history.push({ status: existing.Item.status, note: 'Documents edited by admin', at: now });
+
+            await docClient.send(new UpdateCommand({
+                TableName: TABLES.VENDORS,
+                Key: { phone: decodedPhone },
+                UpdateExpression: 'SET images = :img, statusHistory = :hist, updatedAt = :now',
+                ExpressionAttributeValues: { ':img': normalized, ':hist': history, ':now': now },
+            }));
+
+            return NextResponse.json({ success: true });
+        }
+
         if (action === 'assignStall') {
             const { city, stallNumber, size, notes } = body;
             if (!city || !stallNumber) {
