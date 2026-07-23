@@ -32,3 +32,11 @@ export async function getDownloadUrl(key: string): Promise<string> {
     });
     return getSignedUrl(s3Client, command, { expiresIn: 900 });
 }
+
+// The vendor uploads bucket is public-read, so objects can be linked directly
+// without signing. Each path segment is encoded but "/" separators are kept.
+export function getPublicUrl(key: string): string {
+    const region = process.env.AWS_REGION || 'ap-south-1';
+    const encodedKey = String(key).split('/').map(encodeURIComponent).join('/');
+    return `https://${VENDOR_UPLOADS_BUCKET}.s3.${region}.amazonaws.com/${encodedKey}`;
+}

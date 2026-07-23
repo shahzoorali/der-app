@@ -100,17 +100,27 @@ export default function VendorDashboardPage() {
                         )}
                     </Card>
 
-                    {/* Stall */}
-                    {vendor.stall && (
-                        <Card title="Stall Details">
-                            <div className="text-sm space-y-1">
-                                <p><strong>City:</strong> {vendor.stall.city}</p>
-                                <p><strong>Stall Number:</strong> {vendor.stall.stallNumber}</p>
-                                {vendor.stall.size && <p><strong>Size:</strong> {vendor.stall.size}</p>}
-                                {vendor.stall.notes && <p><strong>Notes:</strong> {vendor.stall.notes}</p>}
-                            </div>
-                        </Card>
-                    )}
+                    {/* Stall(s) — a vendor may be allotted stalls in multiple cities */}
+                    {(() => {
+                        const stallList = Array.isArray(vendor.stalls) && vendor.stalls.length > 0
+                            ? vendor.stalls
+                            : vendor.stall ? [vendor.stall] : [];
+                        if (stallList.length === 0) return null;
+                        return (
+                            <Card title={stallList.length > 1 ? "Stall Details" : "Stall Details"}>
+                                <div className="space-y-4">
+                                    {stallList.map((s: any, i: number) => (
+                                        <div key={i} className="text-sm space-y-1 border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+                                            <p><strong>City:</strong> {s.city}</p>
+                                            <p><strong>Stall Number:</strong> {s.stallNumber}</p>
+                                            {s.size && <p><strong>Size:</strong> {s.size}</p>}
+                                            {s.notes && <p><strong>Notes:</strong> {s.notes}</p>}
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
+                        );
+                    })()}
 
                     {/* Agreement */}
                     {vendor.stall && (

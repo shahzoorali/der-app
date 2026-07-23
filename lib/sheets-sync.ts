@@ -4,6 +4,8 @@
 // web app (see the script below). When the env var is unset, syncing is a
 // no-op so submissions never depend on Sheets being reachable.
 //
+import { getPublicUrl } from '@/lib/s3';
+
 // --- Apps Script to paste into the bound script of your Google Sheet ---
 // function doPost(e) {
 //   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Vendors')
@@ -39,7 +41,7 @@ type VendorRecord = {
     lightsCount?: string | number | null;
     additionalRequirements?: string | null;
     consent?: boolean;
-    images?: { name?: string; docType?: string }[];
+    images?: { key?: string; name?: string; docType?: string }[];
     status?: string;
     createdAt?: string;
     [key: string]: unknown;
@@ -68,14 +70,21 @@ const HEADERS = [
     'Lights',
     'Additional Requirements',
     'Consent',
-    'Uploads',
+    'Logo URL',
+    'Product Photo URLs',
+    'Government ID URL',
     'Status',
 ];
 
 function toRow(v: VendorRecord): (string | number)[] {
-    const uploads = (v.images || [])
-        .map((img) => `${img.docType || 'file'}:${img.name || ''}`)
-        .join(', ');
+    const images = v.images || [];
+    const urlsOf = (docType: string) =>
+        images
+            .filter((img) => img.docType === docType && img.key)
+            .map((img) => getPublicUrl(img.key as string));
+    const logoUrl = urlsOf('logo')[0] || '';
+    const productUrls = urlsOf('product').join('\n');
+    const idUrl = urlsOf('id')[0] || '';
     return [
         v.createdAt || new Date().toISOString(),
         v.applicationType === 'FOOD' ? 'Food Court' : 'Fashion & Lifestyle',
@@ -99,7 +108,9 @@ function toRow(v: VendorRecord): (string | number)[] {
         v.lightsCount ?? '',
         v.additionalRequirements || '',
         v.consent ? 'Yes' : 'No',
-        uploads,
+        logoUrl,
+        productUrls,
+        idUrl,
         v.status || '',
     ];
 }

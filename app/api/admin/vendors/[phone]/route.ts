@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { docClient, TABLES } from '@/lib/dynamo';
-import { getDownloadUrl } from '@/lib/s3';
+import { getPublicUrl } from '@/lib/s3';
 import { createPaymentLink } from '@/lib/razorpay';
 
 const STATUSES = ['SUBMITTED', 'APPROVED', 'WAITLISTED', 'REJECTED', 'INFO_REQUIRED', 'PAID'];
@@ -25,9 +25,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ phon
     }
 
     const item = result.Item;
-    const images = await Promise.all(
-        (item.images || []).map(async (img: any) => ({ ...img, url: await getDownloadUrl(img.key) }))
-    );
+    // Bucket is public-read — link objects directly instead of signing.
+    const images = (item.images || []).map((img: any) => ({ ...img, url: getPublicUrl(img.key) }));
 
     return NextResponse.json({ ...item, images });
 }
@@ -97,6 +96,46 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ ph
             return NextResponse.json({ success: true });
         }
 
+        if (action === 'editApplication') {
+            // Extended application fields (everything beyond the core details).
+            const {
+                applicationType, city, whatsappNumber, instagram, website,
+                categoryOther, productsShowcasing, priceRange, participatedBefore,
+                exhibitionNames, stallSize, electricity, lightsCount, additionalRequirements,
+            } = body;
+
+            const history = existing.Item.statusHistory || [];
+            history.push({ status: existing.Item.status, note: 'Application details edited by admin', at: now });
+
+            await docClient.send(new UpdateCommand({
+                TableName: TABLES.VENDORS,
+                Key: { phone: decodedPhone },
+                UpdateExpression: 'SET applicationType = :at, city = :city, cityPreferences = :cpr, whatsappNumber = :wa, instagram = :ig, website = :web, categoryOther = :co, productsShowcasing = :ps, priceRange = :pr, participatedBefore = :pb, exhibitionNames = :en, stallSize = :ss, electricity = :el, lightsCount = :lc, additionalRequirements = :ar, statusHistory = :hist, updatedAt = :now',
+                ExpressionAttributeValues: {
+                    ':at': applicationType === 'FOOD' ? 'FOOD' : 'FASHION',
+                    ':city': city || existing.Item.city || null,
+                    // Keep cityPreferences aligned with the single city field.
+                    ':cpr': city ? [city] : (existing.Item.cityPreferences || []),
+                    ':wa': whatsappNumber || null,
+                    ':ig': instagram || null,
+                    ':web': website || null,
+                    ':co': categoryOther || null,
+                    ':ps': productsShowcasing || null,
+                    ':pr': priceRange || null,
+                    ':pb': !!participatedBefore,
+                    ':en': exhibitionNames || null,
+                    ':ss': stallSize || null,
+                    ':el': !!electricity,
+                    ':lc': lightsCount ?? null,
+                    ':ar': additionalRequirements || null,
+                    ':hist': history,
+                    ':now': now,
+                },
+            }));
+
+            return NextResponse.json({ success: true });
+        }
+
         if (action === 'updateImages') {
             const { images } = body;
             if (!Array.isArray(images)) {
@@ -122,20 +161,35 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ ph
         }
 
         if (action === 'assignStall') {
-            const { city, stallNumber, size, notes } = body;
-            if (!city || !stallNumber) {
-                return NextResponse.json({ error: 'City and stall number are required' }, { status: 400 });
+            // A vendor may be allotted stalls in multiple cities. `stalls` is the
+            // full list; `stall` mirrors the first entry for backward compat with
+            // the vendor dashboard / agreement pages that still read a single stall.
+            const { stalls } = body;
+            if (!Array.isArray(stalls)) {
+                return NextResponse.json({ error: 'Stalls must be an array' }, { status: 400 });
             }
-            const stall = { city, stallNumber, size: size || null, notes: notes || null, assignedAt: now };
+            const cleaned = stalls
+                .filter((s: any) => s && s.city && s.stallNumber)
+                .map((s: any) => ({
+                    city: s.city,
+                    stallNumber: s.stallNumber,
+                    size: s.size || null,
+                    notes: s.notes || null,
+                    assignedAt: s.assignedAt || now,
+                }));
 
             await docClient.send(new UpdateCommand({
                 TableName: TABLES.VENDORS,
                 Key: { phone: decodedPhone },
-                UpdateExpression: 'SET stall = :stall, updatedAt = :now',
-                ExpressionAttributeValues: { ':stall': stall, ':now': now },
+                UpdateExpression: 'SET stalls = :stalls, stall = :stall, updatedAt = :now',
+                ExpressionAttributeValues: {
+                    ':stalls': cleaned,
+                    ':stall': cleaned[0] || null,
+                    ':now': now,
+                },
             }));
 
-            return NextResponse.json({ success: true, stall });
+            return NextResponse.json({ success: true, stalls: cleaned });
         }
 
         if (action === 'createPaymentLink') {

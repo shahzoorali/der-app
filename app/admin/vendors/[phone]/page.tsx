@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { StatusBadge } from "@/components/vendor/status-badge";
-import { CATEGORIES, CITY_OPTIONS } from "@/lib/vendor-constants";
+import { CATEGORIES, CITY_OPTIONS, CITIES, PRICE_RANGES, STALL_SIZES } from "@/lib/vendor-constants";
 import { useAdminAuth } from "@/lib/use-admin-auth";
 
 const STATUSES = ["SUBMITTED", "APPROVED", "WAITLISTED", "REJECTED", "INFO_REQUIRED", "PAID"];
@@ -21,12 +21,27 @@ export default function VendorDetailAdminPage() {
     const [status, setStatus] = useState("SUBMITTED");
     const [note, setNote] = useState("");
 
-    const [city, setCity] = useState("");
-    const [stallNumber, setStallNumber] = useState("");
-    const [size, setSize] = useState("");
-    const [stallNotes, setStallNotes] = useState("");
+    // Multiple stall allotments (vendor may be in more than one city)
+    type StallRow = { city: string; stallNumber: string; size: string; notes: string };
+    const [stalls, setStalls] = useState<StallRow[]>([]);
 
     const [amount, setAmount] = useState("");
+
+    // Editable application details
+    const [appType, setAppType] = useState("FASHION");
+    const [appCity, setAppCity] = useState("");
+    const [whatsappNumber, setWhatsappNumber] = useState("");
+    const [instagram, setInstagram] = useState("");
+    const [website, setWebsite] = useState("");
+    const [categoryOther, setCategoryOther] = useState("");
+    const [productsShowcasing, setProductsShowcasing] = useState("");
+    const [priceRange, setPriceRange] = useState("");
+    const [participatedBefore, setParticipatedBefore] = useState(false);
+    const [exhibitionNames, setExhibitionNames] = useState("");
+    const [appStallSize, setAppStallSize] = useState("");
+    const [electricity, setElectricity] = useState(false);
+    const [lightsCount, setLightsCount] = useState("");
+    const [additionalRequirements, setAdditionalRequirements] = useState("");
 
     // Editable submitted details
     const [businessName, setBusinessName] = useState("");
@@ -62,12 +77,33 @@ export default function VendorDetailAdminPage() {
                 setCityPreferences(data.cityPreferences || []);
                 setBrandDescription(data.brandDescription || "");
                 setImages(data.images || []);
-                if (data.stall) {
-                    setCity(data.stall.city);
-                    setStallNumber(data.stall.stallNumber);
-                    setSize(data.stall.size || "");
-                    setStallNotes(data.stall.notes || "");
-                }
+
+                // Application details
+                setAppType(data.applicationType || "FASHION");
+                setAppCity(data.city || "");
+                setWhatsappNumber(data.whatsappNumber || "");
+                setInstagram(data.instagram || "");
+                setWebsite(data.website || "");
+                setCategoryOther(data.categoryOther || "");
+                setProductsShowcasing(data.productsShowcasing || "");
+                setPriceRange(data.priceRange || "");
+                setParticipatedBefore(!!data.participatedBefore);
+                setExhibitionNames(data.exhibitionNames || "");
+                setAppStallSize(data.stallSize || "");
+                setElectricity(!!data.electricity);
+                setLightsCount(data.lightsCount != null ? String(data.lightsCount) : "");
+                setAdditionalRequirements(data.additionalRequirements || "");
+
+                // Stalls — prefer the array, fall back to legacy single `stall`.
+                const existingStalls = Array.isArray(data.stalls) && data.stalls.length > 0
+                    ? data.stalls
+                    : data.stall ? [data.stall] : [];
+                setStalls(existingStalls.map((s: any) => ({
+                    city: s.city || "",
+                    stallNumber: s.stallNumber || "",
+                    size: s.size || "",
+                    notes: s.notes || "",
+                })));
             }
         } catch (e) {
             console.error(e);
@@ -140,6 +176,34 @@ export default function VendorDetailAdminPage() {
         const nextImages = images.filter((_, i) => i !== idx);
         await runAction({ action: "updateImages", images: nextImages });
     };
+
+    const addStall = () => setStalls((prev) => [...prev, { city: "", stallNumber: "", size: "", notes: "" }]);
+    const removeStall = (idx: number) => setStalls((prev) => prev.filter((_, i) => i !== idx));
+    const updateStall = (idx: number, field: keyof StallRow, value: string) =>
+        setStalls((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
+
+    const saveStalls = () => {
+        const valid = stalls.filter((s) => s.city.trim() && s.stallNumber.trim());
+        runAction({ action: "assignStall", stalls: valid });
+    };
+
+    const saveApplication = () => runAction({
+        action: "editApplication",
+        applicationType: appType,
+        city: appCity,
+        whatsappNumber,
+        instagram,
+        website,
+        categoryOther,
+        productsShowcasing,
+        priceRange,
+        participatedBefore,
+        exhibitionNames,
+        stallSize: appStallSize,
+        electricity,
+        lightsCount: lightsCount === "" ? null : lightsCount,
+        additionalRequirements,
+    });
 
     if (!ready) return null;
 
@@ -242,25 +306,73 @@ export default function VendorDetailAdminPage() {
                     </button>
                 </div>
 
-                {/* Full application (read-only) */}
+                {/* Full application (editable) */}
                 <div className="bg-white shadow rounded-lg p-6">
                     <h3 className="text-sm font-bold text-gray-700 mb-3">Application Details</h3>
-                    <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-sm">
-                        <Info label="Track" value={vendor.applicationType === 'FOOD' ? 'Food Court' : 'Fashion & Lifestyle'} />
-                        <Info label="City" value={vendor.city} />
-                        <Info label="WhatsApp" value={vendor.whatsappNumber} />
-                        <Info label="Instagram" value={vendor.instagram} />
-                        <Info label="Website" value={vendor.website} />
-                        <Info label="Category (Other)" value={vendor.categoryOther} />
-                        <Info label="Products Showcasing" value={vendor.productsShowcasing} full />
-                        <Info label="Price Range" value={vendor.priceRange} />
-                        <Info label="Exhibited Before" value={vendor.participatedBefore ? 'Yes' : 'No'} />
-                        <Info label="Exhibition Names" value={vendor.exhibitionNames} full />
-                        <Info label="Preferred Stall Size" value={vendor.stallSize} />
-                        <Info label="Electricity" value={vendor.electricity ? `Yes${vendor.lightsCount ? ` — ${vendor.lightsCount} lights` : ''}` : 'No'} />
-                        <Info label="Additional Requirements" value={vendor.additionalRequirements} full />
-                        <Info label="Acknowledgement" value={vendor.consent ? 'Accepted' : 'Not accepted'} />
-                    </dl>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Track</label>
+                            <select value={appType} onChange={(e) => setAppType(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="FASHION">Fashion & Lifestyle</option>
+                                <option value="FOOD">Food Court</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">City</label>
+                            <select value={appCity} onChange={(e) => setAppCity(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="">Select city</option>
+                                {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <Field label="WhatsApp" value={whatsappNumber} onChange={setWhatsappNumber} />
+                        <Field label="Instagram" value={instagram} onChange={setInstagram} />
+                        <Field label="Website" value={website} onChange={setWebsite} />
+                        <Field label="Category (Other)" value={categoryOther} onChange={setCategoryOther} />
+                        <div className="md:col-span-2">
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Products Showcasing</label>
+                            <textarea value={productsShowcasing} onChange={(e) => setProductsShowcasing(e.target.value)} rows={2} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3" />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Price Range</label>
+                            <select value={priceRange} onChange={(e) => setPriceRange(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="">—</option>
+                                {PRICE_RANGES.map((p) => <option key={p} value={p}>{p}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Preferred Stall Size</label>
+                            <select value={appStallSize} onChange={(e) => setAppStallSize(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="">—</option>
+                                {STALL_SIZES.map((s) => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Exhibited Before</label>
+                            <select value={participatedBefore ? "yes" : "no"} onChange={(e) => setParticipatedBefore(e.target.value === "yes")} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <Field label="Exhibition Names" value={exhibitionNames} onChange={setExhibitionNames} />
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Electricity</label>
+                            <select value={electricity ? "yes" : "no"} onChange={(e) => setElectricity(e.target.value === "yes")} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <Field label="Lights Count" value={lightsCount} onChange={setLightsCount} />
+                        <div className="md:col-span-2">
+                            <label className="block text-xs font-medium text-gray-400 uppercase">Additional Requirements</label>
+                            <textarea value={additionalRequirements} onChange={(e) => setAdditionalRequirements(e.target.value)} rows={2} className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3" />
+                        </div>
+                    </div>
+                    <div className="mt-4 flex items-center gap-4">
+                        <button onClick={saveApplication} className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700">
+                            Save Application Details
+                        </button>
+                        <span className="text-xs text-gray-400">Acknowledgement: {vendor.consent ? 'Accepted' : 'Not accepted'}</span>
+                    </div>
                 </div>
 
                 {/* Documents */}
@@ -314,17 +426,29 @@ export default function VendorDetailAdminPage() {
                     </div>
                 </div>
 
-                {/* Stall assignment */}
+                {/* Stall assignment (supports multiple cities) */}
                 <div className="bg-white shadow rounded-lg p-6">
-                    <h3 className="text-sm font-bold text-gray-700 mb-3">Stall Allotment</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <input placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} className="border border-gray-300 rounded-md py-2 px-3" />
-                        <input placeholder="Stall Number" value={stallNumber} onChange={(e) => setStallNumber(e.target.value)} className="border border-gray-300 rounded-md py-2 px-3" />
-                        <input placeholder="Size (optional)" value={size} onChange={(e) => setSize(e.target.value)} className="border border-gray-300 rounded-md py-2 px-3" />
-                        <input placeholder="Notes (optional)" value={stallNotes} onChange={(e) => setStallNotes(e.target.value)} className="border border-gray-300 rounded-md py-2 px-3" />
+                    <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-bold text-gray-700">Stall Allotment</h3>
+                        <button onClick={addStall} className="px-3 py-1.5 text-sm rounded-md border border-gray-300 bg-white hover:bg-gray-50">+ Add City / Stall</button>
                     </div>
-                    <button onClick={() => runAction({ action: 'assignStall', city, stallNumber, size, notes: stallNotes })} className="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700">
-                        Assign Stall
+                    {stalls.length === 0 ? (
+                        <p className="text-sm text-gray-500 mb-3">No stalls allotted yet. Add one or more.</p>
+                    ) : (
+                        <div className="space-y-3">
+                            {stalls.map((s, i) => (
+                                <div key={i} className="grid grid-cols-2 md:grid-cols-9 gap-3 items-center">
+                                    <input placeholder="City" value={s.city} onChange={(e) => updateStall(i, "city", e.target.value)} className="md:col-span-2 border border-gray-300 rounded-md py-2 px-3" />
+                                    <input placeholder="Stall Number" value={s.stallNumber} onChange={(e) => updateStall(i, "stallNumber", e.target.value)} className="md:col-span-2 border border-gray-300 rounded-md py-2 px-3" />
+                                    <input placeholder="Size (optional)" value={s.size} onChange={(e) => updateStall(i, "size", e.target.value)} className="md:col-span-2 border border-gray-300 rounded-md py-2 px-3" />
+                                    <input placeholder="Notes (optional)" value={s.notes} onChange={(e) => updateStall(i, "notes", e.target.value)} className="md:col-span-2 border border-gray-300 rounded-md py-2 px-3" />
+                                    <button onClick={() => removeStall(i)} className="text-red-600 hover:text-red-800 text-sm font-medium">Remove</button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <button onClick={saveStalls} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700">
+                        Save Stall Allotment
                     </button>
                 </div>
 
@@ -361,15 +485,6 @@ export default function VendorDetailAdminPage() {
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
-
-function Info({ label, value, full }: { label: string; value?: string | null; full?: boolean }) {
-    return (
-        <div className={full ? "md:col-span-2" : ""}>
-            <dt className="text-xs font-medium text-gray-400 uppercase">{label}</dt>
-            <dd className="mt-0.5 text-gray-800 whitespace-pre-wrap">{value || <span className="text-gray-300">—</span>}</dd>
         </div>
     );
 }
