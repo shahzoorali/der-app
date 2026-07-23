@@ -261,6 +261,27 @@ export default function VendorDetailAdminPage() {
                     </button>
                 </div>
 
+                {/* Full application (read-only) */}
+                <div className="bg-white shadow rounded-lg p-6">
+                    <h3 className="text-sm font-bold text-gray-700 mb-3">Application Details</h3>
+                    <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                        <Info label="Track" value={vendor.applicationType === 'FOOD' ? 'Food Court' : 'Fashion & Lifestyle'} />
+                        <Info label="City" value={vendor.city} />
+                        <Info label="WhatsApp" value={vendor.whatsappNumber} />
+                        <Info label="Instagram" value={vendor.instagram} />
+                        <Info label="Website" value={vendor.website} />
+                        <Info label="Category (Other)" value={vendor.categoryOther} />
+                        <Info label="Products Showcasing" value={vendor.productsShowcasing} full />
+                        <Info label="Price Range" value={vendor.priceRange} />
+                        <Info label="Exhibited Before" value={vendor.participatedBefore ? 'Yes' : 'No'} />
+                        <Info label="Exhibition Names" value={vendor.exhibitionNames} full />
+                        <Info label="Preferred Stall Size" value={vendor.stallSize} />
+                        <Info label="Electricity" value={vendor.electricity ? `Yes${vendor.lightsCount ? ` — ${vendor.lightsCount} lights` : ''}` : 'No'} />
+                        <Info label="Additional Requirements" value={vendor.additionalRequirements} full />
+                        <Info label="Acknowledgement" value={vendor.consent ? 'Accepted' : 'Not accepted'} />
+                    </dl>
+                </div>
+
                 {/* Documents */}
                 <div className="bg-white shadow rounded-lg p-6">
                     <div className="flex items-center justify-between mb-3">
@@ -359,6 +380,15 @@ export default function VendorDetailAdminPage() {
                     </div>
                 </div>
             </div>
+        </div>
+    );
+}
+
+function Info({ label, value, full }: { label: string; value?: string | null; full?: boolean }) {
+    return (
+        <div className={full ? "md:col-span-2" : ""}>
+            <dt className="text-xs font-medium text-gray-400 uppercase">{label}</dt>
+            <dd className="mt-0.5 text-gray-800 whitespace-pre-wrap">{value || <span className="text-gray-300">—</span>}</dd>
         </div>
     );
 }

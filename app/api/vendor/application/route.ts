@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 import { docClient, TABLES } from '@/lib/dynamo';
 import { getVendorPhoneFromRequest } from '@/lib/vendor-session';
 import { getDownloadUrl } from '@/lib/s3';
+import { syncVendorToSheet } from '@/lib/sheets-sync';
 
 export async function GET(request: Request) {
     const phone = getVendorPhoneFromRequest(request);
@@ -37,10 +38,35 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { businessName, contactPerson, email, brandDescription, productCategory, cityPreferences, images } = body;
+        const {
+            applicationType,
+            businessName,
+            contactPerson,
+            whatsappNumber,
+            email,
+            city,
+            instagram,
+            website,
+            productCategory,
+            categoryOther,
+            brandDescription,
+            productsShowcasing,
+            priceRange,
+            participatedBefore,
+            exhibitionNames,
+            stallSize,
+            electricity,
+            lightsCount,
+            additionalRequirements,
+            consent,
+            images,
+        } = body;
 
-        if (!businessName || !contactPerson || !productCategory || !Array.isArray(cityPreferences) || cityPreferences.length === 0) {
+        if (!businessName || !contactPerson || !productCategory || !city) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+        if (!consent) {
+            return NextResponse.json({ error: 'Please accept the participation acknowledgement.' }, { status: 400 });
         }
 
         const now = new Date().toISOString();
@@ -49,13 +75,31 @@ export async function POST(request: Request) {
         const item = {
             phone,
             vendorId,
+            applicationType: applicationType === 'FOOD' ? 'FOOD' : 'FASHION',
             businessName,
             contactPerson,
+            whatsappNumber: whatsappNumber || null,
             email: email || null,
-            brandDescription: brandDescription || '',
+            city,
+            // Kept for backward compatibility with admin/dashboard city filters.
+            cityPreferences: [city],
+            instagram: instagram || null,
+            website: website || null,
             productCategory,
-            cityPreferences,
-            images: Array.isArray(images) ? images.map((img: any) => ({ key: img.key, name: img.name, uploadedAt: now })) : [],
+            categoryOther: categoryOther || null,
+            brandDescription: brandDescription || '',
+            productsShowcasing: productsShowcasing || null,
+            priceRange: priceRange || null,
+            participatedBefore: !!participatedBefore,
+            exhibitionNames: exhibitionNames || null,
+            stallSize: stallSize || null,
+            electricity: !!electricity,
+            lightsCount: lightsCount ?? null,
+            additionalRequirements: additionalRequirements || null,
+            consent: !!consent,
+            images: Array.isArray(images)
+                ? images.map((img: any) => ({ key: img.key, name: img.name, docType: img.docType || null, uploadedAt: now }))
+                : [],
             status: 'SUBMITTED',
             statusNote: null,
             statusHistory: [{ status: 'SUBMITTED', note: null, at: now }],
@@ -64,6 +108,10 @@ export async function POST(request: Request) {
         };
 
         await docClient.send(new PutCommand({ TableName: TABLES.VENDORS, Item: item }));
+
+        // Mirror into Google Sheet (no-op if VENDOR_SHEET_WEBHOOK_URL unset).
+        // Fire-and-forget: never block or fail the submission on Sheets.
+        void syncVendorToSheet(item);
 
         return NextResponse.json({ success: true, vendorId });
     } catch (error: any) {
