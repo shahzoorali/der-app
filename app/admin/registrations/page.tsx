@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 export default function RegistrationsAdminPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState(false);
+    const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
 
     const [registrations, setRegistrations] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -18,27 +17,6 @@ export default function RegistrationsAdminPage() {
             fetchRegistrations();
         }
     }, [isAuthenticated]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError(false);
-        try {
-            const res = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password }),
-            });
-
-            if (res.ok) {
-                setIsAuthenticated(true);
-            } else {
-                setLoginError(true);
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Connection error check your server");
-        }
-    };
 
     const fetchRegistrations = async () => {
         setLoading(true);
@@ -132,6 +110,8 @@ export default function RegistrationsAdminPage() {
 
     const totalRegistrations = filteredData.length;
     const totalAttendees = filteredData.reduce((acc, curr) => acc + (curr.adults || 1), 0);
+
+    if (!ready) return null;
 
     if (!isAuthenticated) {
         return (

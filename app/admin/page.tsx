@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 export default function AdminPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState("");
+    const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
     const [announcements, setAnnouncements] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [waStatus, setWaStatus] = useState<boolean | null>(null);
@@ -81,29 +81,6 @@ export default function AdminPage() {
             }
         } catch (e) {
             console.error(e);
-        }
-    };
-
-    const [loginError, setLoginError] = useState(false);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError(false);
-        try {
-            const res = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password }),
-            });
-
-            if (res.ok) {
-                setIsAuthenticated(true);
-            } else {
-                setLoginError(true);
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Connection error check your server");
         }
     };
 
@@ -229,6 +206,8 @@ export default function AdminPage() {
             console.error(e);
         }
     };
+
+    if (!ready) return null;
 
     if (!isAuthenticated) {
         return (

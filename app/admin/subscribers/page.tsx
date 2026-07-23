@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 interface Subscriber {
     endpoint: string;
@@ -16,9 +17,7 @@ interface Subscriber {
 }
 
 export default function SubscribersAdminPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState(false);
+    const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
 
     const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
     const [totalCount, setTotalCount] = useState(0);
@@ -34,27 +33,6 @@ export default function SubscribersAdminPage() {
             fetchSubscribers();
         }
     }, [isAuthenticated]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError(false);
-        try {
-            const res = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password }),
-            });
-
-            if (res.ok) {
-                setIsAuthenticated(true);
-            } else {
-                setLoginError(true);
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Connection error check your server");
-        }
-    };
 
     const fetchSubscribers = async () => {
         setLoading(true);
@@ -101,6 +79,8 @@ export default function SubscribersAdminPage() {
         if (endpoint.length <= 40) return endpoint;
         return `${endpoint.substring(0, 30)}...${endpoint.substring(endpoint.length - 10)}`;
     };
+
+    if (!ready) return null;
 
     if (!isAuthenticated) {
         return (

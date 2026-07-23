@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import QRCode from "react-qr-code";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 export default function WhatsappQrAdminPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState(false);
+    const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
 
     const [qr, setQr] = useState<string | null>(null);
     const [connected, setConnected] = useState<boolean | null>(null);
@@ -21,26 +20,6 @@ export default function WhatsappQrAdminPage() {
             };
         }
     }, [isAuthenticated]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError(false);
-        try {
-            const res = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password }),
-            });
-            if (res.ok) {
-                setIsAuthenticated(true);
-            } else {
-                setLoginError(true);
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Connection error check your server");
-        }
-    };
 
     const fetchStatus = async () => {
         try {
@@ -62,6 +41,8 @@ export default function WhatsappQrAdminPage() {
             console.error(e);
         }
     };
+
+    if (!ready) return null;
 
     if (!isAuthenticated) {
         return (

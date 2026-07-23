@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { StatusBadge } from "@/components/vendor/status-badge";
 import { CATEGORIES, CITY_OPTIONS } from "@/lib/vendor-constants";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 const STATUSES = ["SUBMITTED", "APPROVED", "WAITLISTED", "REJECTED", "INFO_REQUIRED", "PAID"];
 
@@ -11,9 +12,7 @@ export default function VendorDetailAdminPage() {
     const params = useParams();
     const phone = decodeURIComponent(params.phone as string);
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState(false);
+    const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
 
     const [vendor, setVendor] = useState<any>(null);
     const [loading, setLoading] = useState(false);
@@ -44,26 +43,6 @@ export default function VendorDetailAdminPage() {
     useEffect(() => {
         if (isAuthenticated) fetchVendor();
     }, [isAuthenticated]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError(false);
-        try {
-            const res = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password }),
-            });
-            if (res.ok) {
-                setIsAuthenticated(true);
-            } else {
-                setLoginError(true);
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Connection error check your server");
-        }
-    };
 
     const fetchVendor = async () => {
         setLoading(true);
@@ -161,6 +140,8 @@ export default function VendorDetailAdminPage() {
         const nextImages = images.filter((_, i) => i !== idx);
         await runAction({ action: "updateImages", images: nextImages });
     };
+
+    if (!ready) return null;
 
     if (!isAuthenticated) {
         return (

@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { StatusBadge } from "@/components/vendor/status-badge";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 const STATUS_FILTERS = ["all", "SUBMITTED", "APPROVED", "WAITLISTED", "REJECTED", "INFO_REQUIRED", "PAID"];
 
 export default function VendorsAdminPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState(false);
+    const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
 
     const [vendors, setVendors] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -18,26 +17,6 @@ export default function VendorsAdminPage() {
     useEffect(() => {
         if (isAuthenticated) fetchVendors();
     }, [isAuthenticated]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError(false);
-        try {
-            const res = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password }),
-            });
-            if (res.ok) {
-                setIsAuthenticated(true);
-            } else {
-                setLoginError(true);
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Connection error check your server");
-        }
-    };
 
     const fetchVendors = async () => {
         setLoading(true);
@@ -61,6 +40,8 @@ export default function VendorsAdminPage() {
         if (!query) return true;
         return (v.businessName || "").toLowerCase().includes(query) || (v.phone || "").toLowerCase().includes(query);
     });
+
+    if (!ready) return null;
 
     if (!isAuthenticated) {
         return (
