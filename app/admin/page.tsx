@@ -5,25 +5,7 @@ import { useAdminAuth } from "@/lib/use-admin-auth";
 
 export default function AdminPage() {
     const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
-    const [announcements, setAnnouncements] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
     const [waStatus, setWaStatus] = useState<boolean | null>(null);
-    const [waLoading, setWaLoading] = useState(false);
-
-    // Form state
-    const [type, setType] = useState("general");
-    const [title, setTitle] = useState("");
-    const [time, setTime] = useState("");
-    const [venue, setVenue] = useState("");
-    const [description, setDescription] = useState("");
-    const [priority, setPriority] = useState("medium");
-    const [sendPush, setSendPush] = useState(false);
-
-    // Push notification state
-    const [pushTitle, setPushTitle] = useState("");
-    const [pushBody, setPushBody] = useState("");
-    const [pushLoading, setPushLoading] = useState(false);
-    const [pushResult, setPushResult] = useState<string | null>(null);
 
     // Settings state
     const [droneShowHighlightsUrl, setDroneShowHighlightsUrl] = useState("");
@@ -31,11 +13,8 @@ export default function AdminPage() {
     const [settingsLoading, setSettingsLoading] = useState(false);
     const [settingsResult, setSettingsResult] = useState<string | null>(null);
 
-    const PUSH_API_URL = process.env.NEXT_PUBLIC_NOTIFICATION_API_URL || '';
-
     useEffect(() => {
         if (isAuthenticated) {
-            fetchAnnouncements();
             fetchSettings();
             fetchWAStatus();
             const interval = setInterval(fetchWAStatus, 15000); // Check every 15s
@@ -44,7 +23,6 @@ export default function AdminPage() {
     }, [isAuthenticated]);
 
     const fetchWAStatus = async () => {
-        setWaLoading(true);
         try {
             const res = await fetch("/api/admin/whatsapp-status", {
                 headers: { "Authorization": `Bearer ${password}` }
@@ -53,17 +31,6 @@ export default function AdminPage() {
             if (res.ok) {
                 setWaStatus(data.connected);
             }
-        } catch (e) {
-            console.error(e);
-        }
-        setWaLoading(false);
-    };
-
-    const fetchAnnouncements = async () => {
-        try {
-            const res = await fetch("/api/announcements");
-            const data = await res.json();
-            setAnnouncements(data);
         } catch (e) {
             console.error(e);
         }
@@ -82,84 +49,6 @@ export default function AdminPage() {
         } catch (e) {
             console.error(e);
         }
-    };
-
-    const handleAdd = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const res = await fetch("/api/announcements", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${password}`,
-                },
-                body: JSON.stringify({
-                    type, title, time, venue, description, priority
-                }),
-            });
-            if (res.ok) {
-                // Also send push if checkbox enabled
-                if (sendPush && PUSH_API_URL) {
-                    try {
-                        await fetch(`${PUSH_API_URL}/admin/notify`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${password}`,
-                            },
-                            body: JSON.stringify({ title, body: description }),
-                        });
-                    } catch (pushErr) {
-                        console.error('Push notification failed:', pushErr);
-                    }
-                }
-                // reset form
-                setTitle("");
-                setTime("");
-                setVenue("");
-                setDescription("");
-                setSendPush(false);
-                await fetchAnnouncements();
-            } else {
-                alert("Failed to add - check password");
-            }
-        } catch (e) {
-            console.error(e);
-        }
-        setLoading(false);
-    };
-
-    const handleSendPush = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!PUSH_API_URL) {
-            alert('Push API URL not configured. Set NEXT_PUBLIC_NOTIFICATION_API_URL in .env.local');
-            return;
-        }
-        setPushLoading(true);
-        setPushResult(null);
-        try {
-            const res = await fetch(`${PUSH_API_URL}/admin/notify`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${password}`
-                },
-                body: JSON.stringify({ title: pushTitle, body: pushBody }),
-            });
-            const data = await res.json();
-            if (res.ok) {
-                setPushResult(`✅ Sent to ${data.sent} devices (${data.failed} failed, ${data.staleRemoved} stale removed)`);
-                setPushTitle('');
-                setPushBody('');
-            } else {
-                setPushResult(`❌ Failed: ${data.error || 'Unknown error'}`);
-            }
-        } catch (e) {
-            console.error(e);
-            setPushResult('❌ Network error');
-        }
-        setPushLoading(false);
     };
 
     const handleUpdateSettings = async (e: React.FormEvent) => {
@@ -185,26 +74,6 @@ export default function AdminPage() {
             setSettingsResult('❌ Network error');
         }
         setSettingsLoading(false);
-    };
-
-    const handleDelete = async (id: string) => {
-        if (!confirm("Delete this announcement?")) return;
-
-        try {
-            const res = await fetch(`/api/announcements?id=${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${password}`,
-                }
-            });
-            if (res.ok) {
-                await fetchAnnouncements();
-            } else {
-                alert("Failed to delete - check password");
-            }
-        } catch (e) {
-            console.error(e);
-        }
     };
 
     if (!ready) return null;
@@ -234,128 +103,37 @@ export default function AdminPage() {
             <div className="max-w-4xl mx-auto space-y-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Announcements Admin</h1>
-                        <p className="mt-2 text-sm text-gray-700">Add or remove broadcasts.</p>
+                        <h1 className="text-3xl font-bold text-gray-900">Admin</h1>
+                        <p className="mt-2 text-sm text-gray-700">Daawat-e-Ramzaan Season 6 admin panel.</p>
                     </div>
-                    <div className="flex gap-4 items-center">
-                        <a href="/admin/whatsapp-qr" className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50">
-                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">WhatsApp:</span>
-                            <div className="flex items-center gap-1.5">
-                                <div className={`w-2.5 h-2.5 rounded-full ${waStatus === true ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : waStatus === false ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' : 'bg-gray-300'}`}></div>
-                                <span className={`text-sm font-medium ${waStatus === true ? 'text-green-700' : waStatus === false ? 'text-red-700' : 'text-gray-500'}`}>
-                                    {waStatus === true ? 'Connected' : waStatus === false ? 'Disconnected — click to scan QR' : 'Checking...'}
-                                </span>
-                            </div>
-                        </a>
-                        <a href="/admin/registrations" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
-                            View Registrations
-                        </a>
-                        <a href="/admin/subscribers" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            View Subscribers
-                        </a>
-                        <a href="/admin/vendors" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                            View Vendors
-                        </a>
-                    </div>
+                    <a href="/admin/whatsapp-qr" className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50">
+                        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">WhatsApp:</span>
+                        <div className="flex items-center gap-1.5">
+                            <div className={`w-2.5 h-2.5 rounded-full ${waStatus === true ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : waStatus === false ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' : 'bg-gray-300'}`}></div>
+                            <span className={`text-sm font-medium ${waStatus === true ? 'text-green-700' : waStatus === false ? 'text-red-700' : 'text-gray-500'}`}>
+                                {waStatus === true ? 'Connected' : waStatus === false ? 'Disconnected — click to scan QR' : 'Checking...'}
+                            </span>
+                        </div>
+                    </a>
                 </div>
 
-                <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">New Announcement</h3>
-                    <form onSubmit={handleAdd} className="space-y-4">
-                        <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Type</label>
-                                <select value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                    <option value="general">General</option>
-                                    <option value="event">Event</option>
-                                    <option value="crowd">Crowd Alert</option>
-                                    <option value="promo">Promo</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Priority</label>
-                                <select value={priority} onChange={e => setPriority(e.target.value)} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700">Title</label>
-                                <input type="text" required value={title} onChange={e => setTitle(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Time (e.g. 9:15 PM)</label>
-                                <input type="text" required value={time} onChange={e => setTime(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Venue</label>
-                                <input type="text" required value={venue} onChange={e => setVenue(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea required rows={3} value={description} onChange={e => setDescription(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-                            </div>
-                        </div>
-                        <button type="submit" disabled={loading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
-                            {loading ? "Broadcasting..." : "Broadcast Announcement"}
-                        </button>
-                        <label className="flex items-center gap-2 mt-3 text-sm text-gray-600 cursor-pointer">
-                            <input type="checkbox" checked={sendPush} onChange={e => setSendPush(e.target.checked)} className="rounded border-gray-300" />
-                            Also send as Push Notification to all users
-                        </label>
-                    </form>
-                </div>
-
-                <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                        {announcements.map((a) => (
-                            <li key={a.id}>
-                                <div className="px-4 py-4 flex items-center sm:px-6">
-                                    <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
-                                        <div className="truncate">
-                                            <div className="flex text-sm">
-                                                <p className="font-medium text-blue-600 truncate">{a.title}</p>
-                                                <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
-                                                    in {a.venue}
-                                                </p>
-                                            </div>
-                                            <div className="mt-2 flex">
-                                                <div className="flex items-center text-sm text-gray-500">
-                                                    <p>{a.time}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="ml-5 flex-shrink-0">
-                                        <button onClick={() => handleDelete(a.id)} className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 bg-red-50 rounded-md">Delete</button>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Standalone Push Notification */}
-                <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">📢 Send Push Notification</h3>
-                    <p className="text-sm text-gray-500 mb-4">Send a push notification to all registered devices without creating an announcement.</p>
-                    <form onSubmit={handleSendPush} className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Title</label>
-                            <input type="text" required value={pushTitle} onChange={e => setPushTitle(e.target.value)} placeholder="e.g. 🎤 Qawwali Night starting now!" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Message</label>
-                            <textarea required rows={2} value={pushBody} onChange={e => setPushBody(e.target.value)} placeholder="e.g. Head to the Cultural Stage for an amazing performance!" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-                        </div>
-                        <button type="submit" disabled={pushLoading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
-                            {pushLoading ? "Sending..." : "🔔 Send Push Notification"}
-                        </button>
-                        {pushResult && (
-                            <p className={`text-sm font-medium ${pushResult.startsWith('✅') ? 'text-green-600' : 'text-red-600'}`}>{pushResult}</p>
-                        )}
-                    </form>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="/admin/app-users" className="bg-white shadow rounded-lg p-6 hover:shadow-md transition-shadow border border-transparent hover:border-blue-200">
+                        <h3 className="text-lg font-bold text-gray-900">Targeted App Users</h3>
+                        <p className="mt-1 text-sm text-gray-500">Announcements, push notifications, registrations, and subscribers for people using the app.</p>
+                    </a>
+                    <a href="/admin/vendors" className="bg-white shadow rounded-lg p-6 hover:shadow-md transition-shadow border border-transparent hover:border-emerald-200">
+                        <h3 className="text-lg font-bold text-gray-900">Vendors</h3>
+                        <p className="mt-1 text-sm text-gray-500">Review, approve, and manage Season 6 vendor applications.</p>
+                    </a>
+                    <a href="/admin/vendor-announcements" className="bg-white shadow rounded-lg p-6 hover:shadow-md transition-shadow border border-transparent hover:border-green-200">
+                        <h3 className="text-lg font-bold text-gray-900">Vendor Announcements</h3>
+                        <p className="mt-1 text-sm text-gray-500">Send important WhatsApp messages to vendors — all, by status, or hand-picked.</p>
+                    </a>
+                    <a href="/admin/whatsapp-qr" className="bg-white shadow rounded-lg p-6 hover:shadow-md transition-shadow border border-transparent hover:border-gray-300">
+                        <h3 className="text-lg font-bold text-gray-900">WhatsApp Connection</h3>
+                        <p className="mt-1 text-sm text-gray-500">Scan the QR code to connect or reconnect the WhatsApp sending number.</p>
+                    </a>
                 </div>
 
                 {/* App Settings */}
