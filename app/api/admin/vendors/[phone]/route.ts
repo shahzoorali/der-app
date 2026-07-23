@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, UpdateCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 import { docClient, TABLES } from '@/lib/dynamo';
-import { getPublicUrl } from '@/lib/s3';
+import { getPublicUrl, deleteObjects } from '@/lib/s3';
 import { createPaymentLink } from '@/lib/razorpay';
 
 const STATUSES = ['SUBMITTED', 'APPROVED', 'WAITLISTED', 'REJECTED', 'INFO_REQUIRED', 'PAID'];
@@ -29,6 +29,41 @@ export async function GET(request: Request, { params }: { params: Promise<{ phon
     const images = (item.images || []).map((img: any) => ({ ...img, url: getPublicUrl(img.key) }));
 
     return NextResponse.json({ ...item, images });
+}
+
+// Hard-delete a vendor: removes their uploaded files from S3 and their record
+// from DynamoDB. Irreversible. Requires the vendor's exact phone echoed back in
+// the body as a safety confirmation.
+export async function DELETE(request: Request, { params }: { params: Promise<{ phone: string }> }) {
+    if (!checkAuth(request)) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { phone } = await params;
+    const decodedPhone = decodeURIComponent(phone);
+
+    try {
+        const body = await request.json().catch(() => ({}));
+        if (body.confirmPhone !== decodedPhone) {
+            return NextResponse.json({ error: 'Confirmation phone does not match.' }, { status: 400 });
+        }
+
+        const existing = await docClient.send(new GetCommand({ TableName: TABLES.VENDORS, Key: { phone: decodedPhone } }));
+        if (!existing.Item) {
+            return NextResponse.json({ error: 'Vendor not found' }, { status: 404 });
+        }
+
+        // Delete uploaded files first; if this fails we don't orphan the record.
+        const keys = (existing.Item.images || []).map((img: any) => img.key).filter(Boolean);
+        await deleteObjects(keys);
+
+        await docClient.send(new DeleteCommand({ TableName: TABLES.VENDORS, Key: { phone: decodedPhone } }));
+
+        return NextResponse.json({ success: true });
+    } catch (error: any) {
+        console.error('Error deleting vendor:', error);
+        return NextResponse.json({ error: 'Failed to delete vendor', details: error.message }, { status: 500 });
+    }
 }
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ phone: string }> }) {

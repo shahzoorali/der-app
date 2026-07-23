@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { StatusBadge } from "@/components/vendor/status-badge";
 import { CATEGORIES, CITY_OPTIONS, CITIES, PRICE_RANGES, STALL_SIZES } from "@/lib/vendor-constants";
 import { useAdminAuth } from "@/lib/use-admin-auth";
@@ -10,9 +10,12 @@ const STATUSES = ["SUBMITTED", "APPROVED", "WAITLISTED", "REJECTED", "INFO_REQUI
 
 export default function VendorDetailAdminPage() {
     const params = useParams();
+    const router = useRouter();
     const phone = decodeURIComponent(params.phone as string);
 
     const { password, setPassword, isAuthenticated, loginError, handleLogin, ready } = useAdminAuth();
+
+    const [deleting, setDeleting] = useState(false);
 
     const [vendor, setVendor] = useState<any>(null);
     const [loading, setLoading] = useState(false);
@@ -185,6 +188,36 @@ export default function VendorDetailAdminPage() {
     const saveStalls = () => {
         const valid = stalls.filter((s) => s.city.trim() && s.stallNumber.trim());
         runAction({ action: "assignStall", stalls: valid });
+    };
+
+    const handleDeleteVendor = async () => {
+        const typed = window.prompt(
+            `This permanently deletes ${vendor.businessName || "this vendor"} — their application, all uploaded files, and stall/payment records. This cannot be undone.\n\nType the vendor's phone (${vendor.phone}) to confirm:`
+        );
+        if (typed === null) return; // cancelled
+        if (typed.trim() !== vendor.phone) {
+            setActionResult("Phone did not match — deletion cancelled.");
+            return;
+        }
+        setDeleting(true);
+        setActionResult("");
+        try {
+            const res = await fetch(`/api/admin/vendors/${encodeURIComponent(phone)}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${password}` },
+                body: JSON.stringify({ confirmPhone: vendor.phone }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                router.push("/admin/vendors");
+            } else {
+                setActionResult(data.error || "Delete failed.");
+                setDeleting(false);
+            }
+        } catch (e) {
+            setActionResult("Network error during delete.");
+            setDeleting(false);
+        }
     };
 
     const saveApplication = () => runAction({
@@ -483,6 +516,21 @@ export default function VendorDetailAdminPage() {
                             Create Payment Link
                         </button>
                     </div>
+                </div>
+
+                {/* Danger zone */}
+                <div className="bg-white shadow rounded-lg p-6 border border-red-200">
+                    <h3 className="text-sm font-bold text-red-700 mb-1">Danger Zone</h3>
+                    <p className="text-sm text-gray-500 mb-3">
+                        Permanently delete this vendor — application, uploaded files, stall and payment records. This cannot be undone.
+                    </p>
+                    <button
+                        onClick={handleDeleteVendor}
+                        disabled={deleting}
+                        className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 disabled:opacity-50"
+                    >
+                        {deleting ? "Deleting…" : "Delete Vendor"}
+                    </button>
                 </div>
             </div>
         </div>

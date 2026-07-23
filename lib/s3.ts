@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const credentials = process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
@@ -31,6 +31,18 @@ export async function getDownloadUrl(key: string): Promise<string> {
         Key: key,
     });
     return getSignedUrl(s3Client, command, { expiresIn: 900 });
+}
+
+// Permanently delete a set of objects from the uploads bucket. No-ops on an
+// empty list. S3 DeleteObjects handles up to 1000 keys per call, which is far
+// more than a single vendor will ever have.
+export async function deleteObjects(keys: string[]): Promise<void> {
+    const validKeys = keys.filter(Boolean);
+    if (validKeys.length === 0) return;
+    await s3Client.send(new DeleteObjectsCommand({
+        Bucket: VENDOR_UPLOADS_BUCKET,
+        Delete: { Objects: validKeys.map((Key) => ({ Key })) },
+    }));
 }
 
 // The vendor uploads bucket is public-read, so objects can be linked directly
