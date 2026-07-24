@@ -9,13 +9,14 @@ type Props = {
     loading: boolean;
     error: string;
     viaWhatsApp?: boolean;
+    bypass?: boolean;
     onPhoneChange: (v: string) => void;
     onOtpChange: (v: string) => void;
     onSendOtp: (e: React.FormEvent) => void;
     onVerifyOtp: (e: React.FormEvent) => void;
 };
 
-export function VendorOtpStep({ phase, phone, otp, loading, error, viaWhatsApp, onPhoneChange, onOtpChange, onSendOtp, onVerifyOtp }: Props) {
+export function VendorOtpStep({ phase, phone, otp, loading, error, viaWhatsApp, bypass, onPhoneChange, onOtpChange, onSendOtp, onVerifyOtp }: Props) {
     return (
         <div className="flex flex-col gap-6">
             {error && (
@@ -47,7 +48,7 @@ export function VendorOtpStep({ phase, phone, otp, loading, error, viaWhatsApp, 
                         disabled={loading || phone.length !== 10}
                         className="w-full py-4 bg-brand-blue hover:bg-brand-blue/90 disabled:opacity-50 text-white rounded-2xl text-lg font-bold transition-colors"
                     >
-                        {loading ? 'Sending OTP...' : 'Send OTP'}
+                        {loading ? (bypass ? 'Continuing...' : 'Sending OTP...') : (bypass ? 'Continue' : 'Send OTP')}
                     </button>
                 </form>
             )}

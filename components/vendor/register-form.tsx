@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { PageContainer, Navbar } from '@/components/layout-components';
@@ -32,8 +32,16 @@ export function VendorRegisterForm({ track }: { track: ApplicationType }) {
     const [phone, setPhone] = useState('');
     const [otp, setOtp] = useState('');
     const [viaWhatsApp, setViaWhatsApp] = useState(false);
+    const [otpBypass, setOtpBypass] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        fetch('/api/settings')
+            .then((r) => r.json())
+            .then((d) => setOtpBypass(d.otpBypass === true))
+            .catch(() => {});
+    }, []);
 
     // Basic details
     const [businessName, setBusinessName] = useState('');
@@ -72,6 +80,25 @@ export function VendorRegisterForm({ track }: { track: ApplicationType }) {
         setError('');
         setLoading(true);
         try {
+            if (otpBypass) {
+                const res = await fetch('/api/vendor/auth/bypass', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: `+91${phone}`, mode: 'register' }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    if (data.hasApplication) {
+                        router.push('/vendor/dashboard');
+                    } else {
+                        setStep('DETAILS');
+                    }
+                } else {
+                    setError(data.error || 'Could not continue');
+                }
+                return;
+            }
+
             const res = await fetch('/api/vendor/auth/send-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -276,6 +303,7 @@ export function VendorRegisterForm({ track }: { track: ApplicationType }) {
                             loading={loading}
                             error={error}
                             viaWhatsApp={viaWhatsApp}
+                            bypass={otpBypass}
                             onPhoneChange={setPhone}
                             onOtpChange={setOtp}
                             onSendOtp={handleSendOtp}

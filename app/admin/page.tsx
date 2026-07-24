@@ -10,6 +10,7 @@ export default function AdminPage() {
     // Settings state
     const [droneShowHighlightsUrl, setDroneShowHighlightsUrl] = useState("");
     const [aasmaanHighlightsUrl, setAasmaanHighlightsUrl] = useState("");
+    const [otpBypass, setOtpBypass] = useState(false);
     const [settingsLoading, setSettingsLoading] = useState(false);
     const [settingsResult, setSettingsResult] = useState<string | null>(null);
 
@@ -46,6 +47,7 @@ export default function AdminPage() {
             if (data.aasmaanHighlightsUrl !== undefined) {
                 setAasmaanHighlightsUrl(data.aasmaanHighlightsUrl);
             }
+            setOtpBypass(data.otpBypass === true);
         } catch (e) {
             console.error(e);
         }
@@ -62,7 +64,7 @@ export default function AdminPage() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${password}`
                 },
-                body: JSON.stringify({ droneShowHighlightsUrl, aasmaanHighlightsUrl }),
+                body: JSON.stringify({ droneShowHighlightsUrl, aasmaanHighlightsUrl, otpBypass }),
             });
             if (res.ok) {
                 setSettingsResult('✅ Settings updated successfully');
@@ -149,6 +151,19 @@ export default function AdminPage() {
                             <label className="block text-sm font-medium text-gray-700">Daawat-e-Aasmaan Highlights URL (Instagram Reel)</label>
                             <input type="text" value={aasmaanHighlightsUrl} onChange={e => setAasmaanHighlightsUrl(e.target.value)} placeholder="https://www.instagram.com/reel/..." className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                             <p className="mt-1 text-xs text-gray-500">Instagram link for the Daawat-e-Aasmaan drone show highlights. Shows after the event ends.</p>
+                        </div>
+                        <div className={`rounded-md border p-4 ${otpBypass ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50'}`}>
+                            <label className="flex items-start gap-3 cursor-pointer">
+                                <input type="checkbox" checked={otpBypass} onChange={e => setOtpBypass(e.target.checked)} className="mt-1 h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                                <span>
+                                    <span className="block text-sm font-medium text-gray-900">Bypass OTP for vendor login &amp; registration</span>
+                                    <span className="block mt-1 text-xs text-gray-500">
+                                        When enabled, vendors skip the OTP step and continue with just their phone number.
+                                        Use this only while WhatsApp/SMS OTP delivery is unavailable — anyone can then sign in
+                                        as any phone number. Turn it back off once OTP delivery is restored.
+                                    </span>
+                                </span>
+                            </label>
                         </div>
                         <button type="submit" disabled={settingsLoading} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
                             {settingsLoading ? "Saving..." : "Save Settings"}
