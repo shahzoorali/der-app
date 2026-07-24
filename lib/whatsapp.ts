@@ -127,6 +127,20 @@ export async function initWhatsApp() {
                 processQueue(); // Start processing any pending checks
             }
         });
+
+        // Diagnostic: log delivery-status transitions for outgoing messages so
+        // we can tell whether WhatsApp actually delivered an OTP or silently
+        // dropped it after sendMessage() resolved.
+        thisSock.ev.on('messages.update', (updates) => {
+            for (const u of updates) {
+                const status = u.update?.status;
+                if (status !== undefined) {
+                    console.log(`[WA receipt] to=${u.key.remoteJid} id=${u.key.id} status=${status}`);
+                }
+            }
+        });
+
+        thisSock.ev.on('messages.media-update', () => { /* noop */ });
     } catch (error) {
         console.error('Failed to initialize WhatsApp:', error);
         sock = null;
@@ -177,10 +191,26 @@ export async function sendWhatsAppMessage(phoneStr: string, text: string): Promi
     }
 
     const cleanPhone = phoneStr.replace(/\D/g, '');
-    const jid = `${cleanPhone}@s.whatsapp.net`;
 
     try {
-        await sock.sendMessage(jid, { text });
+        // Resolve the canonical JID via onWhatsApp rather than assuming
+        // @s.whatsapp.net — WhatsApp may return a different addressing (e.g.
+        // @lid) for some accounts, and sending to the wrong JID silently fails.
+        let jid = `${cleanPhone}@s.whatsapp.net`;
+        try {
+            const results = await sock.onWhatsApp(jid);
+            if (results && results.length > 0 && results[0].exists && results[0].jid) {
+                jid = results[0].jid;
+            } else if (results && results.length > 0 && !results[0].exists) {
+                console.error(`[WA send] ${cleanPhone} is NOT on WhatsApp — aborting send`);
+                return false;
+            }
+        } catch (e) {
+            console.error('[WA send] onWhatsApp lookup failed, using default jid:', e);
+        }
+
+        const sent = await sock.sendMessage(jid, { text });
+        console.log(`[WA send] queued to ${jid} — messageId=${sent?.key?.id ?? 'none'}`);
         return true;
     } catch (err) {
         console.error('Error sending WhatsApp message:', err);
